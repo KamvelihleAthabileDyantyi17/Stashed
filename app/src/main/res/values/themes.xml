@@ -8,4 +8,6 @@
         <item name="android:statusBarColor">@color/black_bg</item>
         <item name="android:navigationBarColor">@color/black_bg</item>
     </style>
+    <style name="Theme.Stashed.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.Stashed.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
