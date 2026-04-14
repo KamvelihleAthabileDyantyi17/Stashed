@@ -1,10 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Sharp Editorial Palette -->
+    <color name="black">#111111</color>
+    <color name="white">#FFFFFF</color>
+    <color name="offWhite">#F7F7F7</color>
+    <color name="borderLight">#E0E0E0</color>
+    <color name="textSecondary">#666666</color>
+    <color name="textMuted">#999999</color>
+
+    <!-- Semantic -->
+    <color name="semanticSuccess">#1A7A4A</color>
+    <color name="semanticWarning">#B8860B</color>
+    <color name="semanticDanger">#C0392B</color>
+
+    <!-- Progress -->
+    <color name="progressGood">#1A7A4A</color>
+    <color name="progressWarning">#B8860B</color>
+    <color name="progressDanger">#C0392B</color>
+    <color name="progressTrack">#E8E8E8</color>
+
+    <!-- Dark auth surfaces -->
+    <color name="darkSurface">#1A1A1A</color>
+    <color name="darkCard">#222222</color>
+
+    <!-- Aliases for Material theming -->
+    <color name="colorPrimary">#111111</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorSecondary">#111111</color>
+    <color name="colorOnSecondary">#FFFFFF</color>
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorOnSurface">#111111</color>
+    <color name="colorBackground">#F7F7F7</color>
+    <color name="colorOnBackground">#111111</color>
+    <color name="colorError">#C0392B</color>
+    <color name="colorOnError">#FFFFFF</color>
 </resources>

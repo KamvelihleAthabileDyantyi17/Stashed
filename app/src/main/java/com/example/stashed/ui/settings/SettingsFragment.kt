@@ -4,35 +4,48 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.stashed.R
+import com.example.stashed.StashedApplication
 import com.example.stashed.databinding.FragmentSettingsBinding
+import com.example.stashed.ui.ViewModelFactory
+import com.example.stashed.utils.DateUtils
+import com.example.stashed.utils.SessionManager
 
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val settingsViewModel =
-            ViewModelProvider(this).get(SettingsViewModel::class.java)
+    private val viewModel: SettingsViewModel by viewModels {
+        val app = requireActivity().application as StashedApplication
+        val userId = SessionManager(requireContext()).getUserId()
+        ViewModelFactory(app.repository, userId)
+    }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-        val textView: TextView = binding.textSettings
-        settingsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.user.observe(viewLifecycleOwner) { user ->
+            if (user != null) {
+                binding.tvUserName.text = user.fullName
+                binding.tvUserEmail.text = user.email
+                binding.tvMemberSince.text = "Member since ${DateUtils.formatDate(user.dateRegistered)}"
+            }
         }
-        return root
+
+        binding.btnLogout.setOnClickListener {
+            val session = SessionManager(requireContext())
+            session.logout()
+            findNavController().navigate(R.id.action_settings_to_login)
+        }
     }
 
     override fun onDestroyView() {
