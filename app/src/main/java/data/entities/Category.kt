@@ -2,7 +2,7 @@ package data.entities
 
 import androidx.room.Entity//the imports were needed once removed error ensues
 import androidx.room.PrimaryKey
-
+//each expense belongs to a category are we talking about groceries or transport
 
 @Entity(tableName = "categories")
 data class Category(

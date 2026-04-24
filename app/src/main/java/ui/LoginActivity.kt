@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.stashed.R
+import com.example.stashed.ui.RegisterActivity
 import data.AppDatabase
 import kotlinx.coroutines.launch
 import kotlin.jvm.java

@@ -1,6 +1,4 @@
-package ui
-
-
+package com.example.stashed.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -28,12 +26,12 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        etFullName = findViewById(R.id.etFullName)
-        etUsername = findViewById(R.id.etUsername)
-        etPassword = findViewById(R.id.etPassword)
-        btnRegister = findViewById(R.id.btnRegister)
-        tvError = findViewById(R.id.tvError)
-        tvGoToLogin = findViewById(R.id.tvGoToLogin)
+        etFullName   = findViewById(R.id.etFullName)
+        etUsername   = findViewById(R.id.etUsername)
+        etPassword   = findViewById(R.id.etPassword)
+        btnRegister  = findViewById(R.id.btnRegister)
+        tvError      = findViewById(R.id.tvError)
+        tvGoToLogin  = findViewById(R.id.tvGoToLogin)
 
         btnRegister.setOnClickListener {
             val fullName = etFullName.text.toString().trim()
@@ -53,37 +51,33 @@ class RegisterActivity : AppCompatActivity() {
 
             lifecycleScope.launch {
                 val db = AppDatabase.getDatabase(applicationContext)
-
-                // Check username isn't already taken
                 val existing = db.userDao().getUserByUsername(username)
 
-                runOnUiThread {
-                    if (existing != null) {
-                        showError("Username already taken. Try another.")
-                    } else {
-                        lifecycleScope.launch {
-                            val newUser = User(
-                                username = username,
-                                password = password,
-                                fullName = fullName
-                            )
-                            db.userDao().registerUser(newUser)
+                if (existing != null) {
+                    runOnUiThread { showError("Username already taken. Try another.") }
+                    return@launch
+                }
 
-                            runOnUiThread {
-                                // Go back to login after successful registration
-                                val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                startActivity(intent)
-                                finish()
-                            }
-                        }
-                    }
+                // Save new user
+                val newUser = User(
+                    username = username,
+                    password = password,
+                    fullName = fullName
+                )
+                db.userDao().registerUser(newUser)
+
+                // Go back to login
+                runOnUiThread {
+                    val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    startActivity(intent)
+                    finish()
                 }
             }
         }
 
         tvGoToLogin.setOnClickListener {
-            finish() // Go back to login screen
+            finish()
         }
     }
 

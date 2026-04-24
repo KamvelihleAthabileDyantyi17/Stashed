@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.application)//plugins for what it needs as for this makes it an android app
     alias(libs.plugins.ksp)
 }
 
@@ -51,9 +51,9 @@ dependencies {
 
     // Room Database
     val room_version = "2.7.0"
-    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-runtime:$room_version")//this is the core room engine for things
     implementation("androidx.room:room-ktx:$room_version")
-    ksp("androidx.room:room-compiler:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")//code generator
 
 // Lifecycle (for ViewModels later)
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
