@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create your account"
+            android:text="Create Account"
             android:textSize="28sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
@@ -40,11 +40,12 @@
             android:id="@+id/etFullName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="e.g. Lena Dlamini"
+            android:hint="e.g. Katleho Dlamini"
             android:textColorHint="#555555"
             android:textColor="#FFFFFF"
-            android:background="@drawable/input_background"
             android:inputType="textPersonName"
+            android:padding="12dp"
+            android:background="@drawable/input_background"
             android:layout_marginBottom="20dp"/>
 
         <!-- Username -->
@@ -63,8 +64,9 @@
             android:hint="Choose a username"
             android:textColorHint="#555555"
             android:textColor="#FFFFFF"
-            android:background="@drawable/input_background"
             android:inputType="text"
+            android:padding="12dp"
+            android:background="@drawable/input_background"
             android:layout_marginBottom="20dp"/>
 
         <!-- Password -->
@@ -80,14 +82,15 @@
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Create a password"
+            android:hint="Minimum 6 characters"
             android:textColorHint="#555555"
             android:textColor="#FFFFFF"
-            android:background="@drawable/input_background"
             android:inputType="textPassword"
+            android:padding="12dp"
+            android:background="@drawable/input_background"
             android:layout_marginBottom="32dp"/>
 
-        <!-- Error -->
+        <!-- Error message -->
         <TextView
             android:id="@+id/tvError"
             android:layout_width="match_parent"
@@ -97,19 +100,19 @@
             android:visibility="gone"
             android:layout_marginBottom="16dp"/>
 
-        <!-- Register Button -->
+        <!-- Register button -->
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="Create account"
+            android:text="Create Account"
             android:textSize="16sp"
             android:textStyle="bold"
             android:backgroundTint="#FF3B30"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="16dp"/>
 
-        <!-- Go to Login -->
+        <!-- Back to login -->
         <TextView
             android:id="@+id/tvGoToLogin"
             android:layout_width="wrap_content"
