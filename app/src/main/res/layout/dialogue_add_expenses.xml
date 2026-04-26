@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -10,20 +11,20 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Expense"
+        android:text="@string/add_expense"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
         android:layout_marginBottom="20dp"/>
 
-    <!-- Amount -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="AMOUNT (R)"
         android:textSize="11sp"
         android:textColor="#888888"
-        android:layout_marginBottom="6dp"/>
+        android:layout_marginBottom="6dp"
+        tools:ignore="HardcodedText" />
 
     <EditText
         android:id="@+id/etExpenseAmount"
@@ -31,14 +32,12 @@
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
         android:hint="0.00"
-        android:hintTextColor="#555555"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:padding="12dp"
         android:background="@drawable/input_background"
         android:layout_marginBottom="16dp"/>
 
-    <!-- Description -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,14 +52,12 @@
         android:layout_height="wrap_content"
         android:inputType="textCapSentences"
         android:hint="e.g. Checkers groceries"
-        android:hintTextColor="#555555"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         android:padding="12dp"
         android:background="@drawable/input_background"
         android:layout_marginBottom="16dp"/>
 
-    <!-- Category spinner -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,7 +72,6 @@
         android:layout_height="48dp"
         android:layout_marginBottom="16dp"/>
 
-    <!-- Error -->
     <TextView
         android:id="@+id/tvExpenseError"
         android:layout_width="wrap_content"
@@ -85,7 +81,6 @@
         android:visibility="gone"
         android:layout_marginBottom="12dp"/>
 
-    <!-- Save button -->
     <Button
         android:id="@+id/btnSaveExpense"
         android:layout_width="match_parent"
