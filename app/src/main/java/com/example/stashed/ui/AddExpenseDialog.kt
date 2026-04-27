@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.lifecycleScope
 import com.example.stashed.R
+import com.example.stashed.data.AppDatabase
+import com.example.stashed.data.entities.Expense
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import data.AppDatabase
-import data.entities.Expense
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Calendar
 
 class AddExpenseDialog(
@@ -26,16 +28,17 @@ class AddExpenseDialog(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.dialog_add_expense, container, false)
+    ): View = inflater.inflate(R.layout.dialog_add_expenses, container, false)
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val etAmount      = view.findViewById<EditText>(R.id.etExpenseAmount)
         val etDescription = view.findViewById<EditText>(R.id.etExpenseDescription)
-        val spinner       = view.findViewById<Spinner>(R.id.spinnerCategory)
-        val btnSave       = view.findViewById<Button>(R.id.btnSaveExpense)
-        val tvError       = view.findViewById<TextView>(R.id.tvExpenseError)
+        val spinner        = view.findViewById<Spinner>(R.id.spinnerCategory)
+        val btnSave        = view.findViewById<Button>(R.id.btnSaveExpense)
+        val tvError        = view.findViewById<TextView>(R.id.tvExpenseError)
 
         // Set up spinner
         val adapter = ArrayAdapter(
@@ -65,24 +68,24 @@ class AddExpenseDialog(
 
             lifecycleScope.launch {
                 val db = AppDatabase.getDatabase(requireContext())
-
-                // Get category id — use position + 1 as a simple id
                 val categoryId = spinner.selectedItemPosition + 1
 
-                db.expenseDao().insertExpense(
-                    Expense(
-                        userId      = userId,
-                        categoryId  = categoryId,
-                        amount      = amount,
-                        description = description,
-                        date        = Calendar.getInstance().timeInMillis
+                // Run database operation on IO thread
+                withContext(Dispatchers.IO) {
+                    db.expenseDao().insertExpense(
+                        Expense(
+                            userId      = userId,
+                            categoryId  = categoryId,
+                            amount      = amount,
+                            description = description,
+                            date        = Calendar.getInstance().timeInMillis
+                        )
                     )
-                )
-
-                requireActivity().runOnUiThread {
-                    onExpenseAdded()
-                    dismiss()
                 }
+
+                // Back on Main thread to update UI
+                onExpenseAdded()
+                dismiss()
             }
         }
     }

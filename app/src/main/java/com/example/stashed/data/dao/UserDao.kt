@@ -1,8 +1,8 @@
-package data.dao
+package com.example.stashed.data.dao
 
 
 import androidx.room.*
-import data.entities.User
+import com.example.stashed.data.entities.User
 
 @Dao
 interface UserDao {

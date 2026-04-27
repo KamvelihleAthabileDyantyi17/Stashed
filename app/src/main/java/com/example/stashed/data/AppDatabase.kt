@@ -1,14 +1,21 @@
-package data
+package com.example.stashed.data
+
 
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import data.dao.UserDao
-import data.entities.*
-import data.dao.ExpenseDao
-import data.dao.BudgetDao
+import com.example.stashed.data.dao.UserDao
+
+import com.example.stashed.data.dao.BudgetDao
+import com.example.stashed.data.entities.Badge
+import com.example.stashed.data.entities.BudgetGoal
+import com.example.stashed.data.entities.Category
+import com.example.stashed.data.entities.Expense
+import com.example.stashed.data.entities.ExpenseDao
+import com.example.stashed.data.entities.User
+
 @Database(
     entities = [User::class, Expense::class, Category::class, BudgetGoal::class, Badge::class],
     version = 1,

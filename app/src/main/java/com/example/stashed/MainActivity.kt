@@ -12,12 +12,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stashed.ui.AddExpenseDialog
-import com.example.stashed.ui.LoginActivity
 import com.example.stashed.ui.SetBudgetDialog
 import com.example.stashed.ui.adapters.TransactionAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import data.AppDatabase
-import data.entities.BudgetGoal
+
+// FIXED IMPORTS
+import com.example.stashed.data.AppDatabase
+import com.example.stashed.data.entities.BudgetGoal
+import com.example.stashed.data.entities.Expense
+import com.example.stashed.ui.LoginActivity
+
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -150,6 +154,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
+            // This call now works because of the import above
             val db         = AppDatabase.getDatabase(applicationContext)
             val budget     = db.budgetDao().getBudgetForMonth(userId, month, year)
             val totalSpent = db.expenseDao().getTotalSpentForMonth(
@@ -198,7 +203,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateTransactionList(expenses: List<data.entities.Expense>) {
+    private fun updateTransactionList(expenses: List<Expense>) {
         if (expenses.isEmpty()) {
             tvNoTransactions.visibility = View.VISIBLE
             rvTransactions.visibility   = View.GONE

@@ -1,7 +1,7 @@
-package data.dao
+package com.example.stashed.data.entities
+
 
 import androidx.room.*
-import data.entities.Expense
 
 @Dao
 interface ExpenseDao {

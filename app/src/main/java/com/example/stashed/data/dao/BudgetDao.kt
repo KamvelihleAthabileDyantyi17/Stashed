@@ -1,7 +1,7 @@
-package data.dao
+package com.example.stashed.data.dao
 
 import androidx.room.*
-import data.entities.BudgetGoal
+import com.example.stashed.data.entities.BudgetGoal
 
 @Dao
 interface BudgetDao {

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stashed.R
-import data.entities.Expense
+import com.example.stashed.data.entities.Expense
 import java.text.SimpleDateFormat
 import java.util.*
 

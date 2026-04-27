@@ -1,4 +1,4 @@
-package data.entities
+package com.example.stashed.data.entities
 
 import androidx.room.Entity//the imports were needed once removed error ensues
 import androidx.room.PrimaryKey

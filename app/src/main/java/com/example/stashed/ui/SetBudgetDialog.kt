@@ -8,8 +8,8 @@ import android.widget.*
 import androidx.lifecycle.lifecycleScope
 import com.example.stashed.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import data.AppDatabase
-import data.entities.BudgetGoal
+import com.example.stashed.data.AppDatabase // FIXED IMPORT
+import com.example.stashed.data.entities.BudgetGoal
 import kotlinx.coroutines.launch
 import java.util.Calendar
 

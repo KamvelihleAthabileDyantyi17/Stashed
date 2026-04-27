@@ -1,4 +1,4 @@
-package data.entities//this will always match the package name(k.k)
+package com.example.stashed.data.entities//this will always match the package name(k.k)
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

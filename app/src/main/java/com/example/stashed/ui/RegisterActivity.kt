@@ -9,8 +9,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.stashed.R
-import data.AppDatabase
-import data.entities.User
+import com.example.stashed.data.AppDatabase // FIXED IMPORT
+import com.example.stashed.data.entities.User
 import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
@@ -50,6 +50,7 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             lifecycleScope.launch {
+                // Simplified call to AppDatabase
                 val db = AppDatabase.getDatabase(applicationContext)
                 val existing = db.userDao().getUserByUsername(username)
 
