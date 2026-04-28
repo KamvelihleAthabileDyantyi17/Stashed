@@ -24,6 +24,7 @@ The Personal Budget Planner is an Android application built with Kotlin designed
 - Launch the app and create an account or log in.
 - Start adding expenses and income to track your financial habits.
 - Set budget limits and monitor your progress through the dashboard.
+- 👉PRESENTATION LINK FOR APP: https://youtu.be/Uns8vgwgfVw
 
 ## Contributing
 Contributions are welcome! Please fork the repository and submit a pull request with your improvements or bug fixes.
