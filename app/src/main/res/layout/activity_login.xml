@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121212"
+    android:visibility="visible"
+    tools:visibility="visible">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:gravity="center"
+        android:visibility="visible"
+        tools:visibility="visible">
+
+        <!-- App Logo / Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="STASHED"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="64dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="YOUR MONEY. YOUR RULES."
+            android:textSize="12sp"
+            android:textColor="#888888"
+            android:layout_marginBottom="48dp"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <!-- Username Field -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="USERNAME"
+            android:textColor="#888888"
+            android:textSize="11sp"
+            android:layout_marginBottom="6dp"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your username"
+            android:textColorHint="#555555"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/input_background"
+            android:inputType="text"
+            android:layout_marginBottom="20dp"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <!-- Password Field -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PASSWORD"
+            android:textColor="#888888"
+            android:textSize="11sp"
+            android:layout_marginBottom="6dp"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your password"
+            android:textColorHint="#555555"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/input_background"
+            android:inputType="textPassword"
+            android:layout_marginBottom="32dp"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <!-- Error Message -->
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FF3B30"
+            android:textSize="13sp"
+            android:visibility="visible"
+            android:layout_marginBottom="16dp"
+            tools:visibility="visible" />
+
+        <!-- Login Button -->
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Log In"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:backgroundTint="#FF3B30"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="16dp"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <!-- Go to Register -->
+        <TextView
+            android:id="@+id/tvGoToRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have an account? Sign up"
+            android:textColor="#FF3B30"
+            android:textSize="14sp"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+</ScrollView>

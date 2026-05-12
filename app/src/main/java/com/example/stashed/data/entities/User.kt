@@ -1,17 +1,14 @@
-package com.example.stashed.data.entities
+package com.example.stashed.data.entities//this will always match the package name(k.k)
 
 import androidx.room.Entity
-import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(
-    tableName = "users",
-    indices = [Index(value = ["email"], unique = true)]
-)
+@Entity(tableName = "users")
 data class User(
-    @PrimaryKey(autoGenerate = true) val userId: Int = 0,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val username: String,
+    val password: String,  // In a real app you'd hash this - fine for now
     val fullName: String,
-    val email: String,
-    val passwordHash: String,
-    val dateRegistered: Long = System.currentTimeMillis()
+    val createdAt: Long = System.currentTimeMillis()
 )
