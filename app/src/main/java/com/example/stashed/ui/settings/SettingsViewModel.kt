@@ -1,13 +1,23 @@
 package com.example.stashed.ui.settings
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.example.stashed.data.entities.User
+import com.example.stashed.data.repository.StashedRepository
+import kotlinx.coroutines.launch
 
-class SettingsViewModel : ViewModel() {
+class SettingsViewModel(
+    private val repository: StashedRepository,
+    private val userId: Int
+) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is settings Fragment"
+    private val _user = MutableLiveData<User?>()
+    val user: LiveData<User?> = _user
+
+    init { loadUser() }
+
+    private fun loadUser() {
+        viewModelScope.launch {
+            _user.value = repository.getUserById(userId)
+        }
     }
-    val text: LiveData<String> = _text
 }
