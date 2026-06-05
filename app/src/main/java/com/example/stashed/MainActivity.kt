@@ -15,6 +15,7 @@ import com.example.stashed.ui.AddExpenseDialog
 import com.example.stashed.ui.SetBudgetDialog
 import com.example.stashed.ui.adapters.TransactionAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.example.stashed.ui.BadgesActivity
 
 // FIXED IMPORTS
 import com.example.stashed.data.AppDatabase
@@ -43,6 +44,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fabAddExpense: FloatingActionButton
     private lateinit var btnSetBudget: Button
     private lateinit var btnLogout: Button
+
+    private lateinit var btnViewBadges: Button
+
 
     // State
     private lateinit var sharedPrefs: SharedPreferences
@@ -97,6 +101,7 @@ class MainActivity : AppCompatActivity() {
         fabAddExpense     = findViewById(R.id.fabAddExpense)
         btnSetBudget      = findViewById(R.id.btnSetBudget)
         btnLogout         = findViewById(R.id.btnLogout)
+        btnViewBadges = findViewById(R.id.btnViewBadges)
     }
 
     private fun setupRecyclerView() {
@@ -109,6 +114,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
+
+        btnViewBadges.setOnClickListener {
+            startActivity(Intent(this, BadgesActivity::class.java))
+        }
 
         fabAddExpense.setOnClickListener {
             AddExpenseDialog(userId) { loadDashboard() }

@@ -30,6 +30,7 @@ class SetBudgetDialog(
         super.onViewCreated(view, savedInstanceState)
 
         val etBudget = view.findViewById<EditText>(R.id.etMonthlyBudget)
+        val etMinGoal = view.findViewById<EditText>(R.id.etMinimumGoal)
         val etIncome = view.findViewById<EditText>(R.id.etMonthlyIncome)
         val btnSave  = view.findViewById<Button>(R.id.btnSaveBudget)
         val tvError  = view.findViewById<TextView>(R.id.tvBudgetError)
@@ -58,18 +59,19 @@ class SetBudgetDialog(
             val income = incomeStr.toDoubleOrNull() ?: 0.0
             val cal    = Calendar.getInstance()
 
+            val minGoal = etMinGoal.text.toString().trim().toDoubleOrNull() ?: 0.0
+
             lifecycleScope.launch {
                 val db = AppDatabase.getDatabase(requireContext())
                 db.budgetDao().upsertBudget(
                     BudgetGoal(
                         userId      = userId,
                         maximumGoal = budget,
-                        minimumGoal = 0.0,
+                        minimumGoal = minGoal,
                         month       = cal.get(Calendar.MONTH) + 1,
                         year        = cal.get(Calendar.YEAR)
                     )
                 )
-
                 requireActivity().runOnUiThread {
                     onBudgetSet()
                     dismiss()

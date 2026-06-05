@@ -15,6 +15,7 @@ import com.example.stashed.data.entities.Category
 import com.example.stashed.data.entities.Expense
 import com.example.stashed.data.entities.ExpenseDao
 import com.example.stashed.data.entities.User
+import com.example.stashed.data.dao.BadgeDao
 
 @Database(
     entities = [User::class, Expense::class, Category::class, BudgetGoal::class, Badge::class],
@@ -26,6 +27,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun expenseDao(): ExpenseDao
     abstract fun budgetDao(): BudgetDao
+
+    abstract fun badgeDao(): BadgeDao
 
 
     companion object {
