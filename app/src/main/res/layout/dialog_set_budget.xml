@@ -45,6 +45,26 @@
         android:layout_marginBottom="16dp"/>
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="MINIMUM SPENDING GOAL (R)"
+        android:textColor="#888888"
+        android:textSize="11sp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginTop="16dp"/>
+
+    <EditText
+        android:id="@+id/etMinimumGoal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="e.g. 500"
+        android:textColorHint="#555555"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/input_background"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="MONTHLY INCOME (R) — optional"
