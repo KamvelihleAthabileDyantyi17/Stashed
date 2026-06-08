@@ -18,6 +18,13 @@ import com.example.stashed.ui.ViewModelFactory
 import com.example.stashed.utils.CurrencyUtils
 import com.example.stashed.utils.SessionManager
 
+// MPAndroidChart Imports
+import com.github.mikephil.charting.components.LimitLine
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.utils.ColorTemplate
+
 class ReportsFragment : Fragment() {
 
     private var _binding: FragmentReportsBinding? = null
@@ -37,19 +44,22 @@ class ReportsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 1. Setup the static chart appearance (Limit lines, hiding axes)
+        setupExpenseChart()
+
         viewModel.categorySpends.observe(viewLifecycleOwner) { spends ->
             if (spends.isEmpty()) {
                 binding.tvEmpty.visibility = View.VISIBLE
                 binding.anyChartPie.visibility = View.GONE
-                binding.anyChartBar.visibility = View.GONE
+                binding.expenseBarChart.visibility = View.GONE // Updated ID
                 return@observe
             }
 
             binding.tvEmpty.visibility = View.GONE
             binding.anyChartPie.visibility = View.VISIBLE
-            binding.anyChartBar.visibility = View.VISIBLE
+            binding.expenseBarChart.visibility = View.VISIBLE // Updated ID
 
-            // ── Pie Chart ──────────────────────────────────────────────────
+            // ── Pie Chart (AnyChart) ───────────────────────────────────────
             val pie = AnyChart.pie()
             val pieData: List<DataEntry> = spends.map {
                 ValueDataEntry(it.category.name, it.totalSpent)
@@ -63,22 +73,62 @@ class ReportsFragment : Fragment() {
                 .align(Align.CENTER)
             binding.anyChartPie.setChart(pie)
 
-            // ── Bar Chart ──────────────────────────────────────────────────
-            val bar = AnyChart.bar()
-            val barData: List<DataEntry> = spends.map {
-                ValueDataEntry(it.category.name, it.totalSpent)
+            // ── Bar Chart (MPAndroidChart) ─────────────────────────────────
+            // 1. Convert the data into BarEntry objects
+            val entries = ArrayList<BarEntry>()
+            var xIndex = 0f
+
+            for (spend in spends) {
+                // BarEntry takes an X position (float) and a Y value (float amount)
+                entries.add(BarEntry(xIndex, spend.totalSpent.toFloat()))
+                xIndex += 1f
             }
-            bar.data(barData)
-            bar.title("Category Spend — This Month")
-            bar.yAxis(0).title("Amount (R)")
-            bar.xAxis(0).title("Category")
-            binding.anyChartBar.setChart(bar)
+
+            // 2. Put the entries into a Dataset
+            val dataSet = BarDataSet(entries, "Amount (R)")
+            dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList() // Give it some nice default colors
+
+            // 3. Apply the dataset to the chart and refresh
+            val barData = BarData(dataSet)
+            binding.expenseBarChart.data = barData
+            binding.expenseBarChart.invalidate() // This redraws the chart with the new data
         }
 
         viewModel.currentMonthExpenses.observe(viewLifecycleOwner) { expenses ->
             val total = expenses.sumOf { it.amount }
             binding.tvTotalSpend.text = CurrencyUtils.format(total)
             binding.tvTransactionCount.text = "${expenses.size} transactions"
+        }
+    }
+
+    private fun setupExpenseChart() {
+        // Create the Max Goal Line
+        val maxBudgetLine = LimitLine(2000f, "Max Budget Limit").apply {
+            lineWidth = 2f
+            lineColor = Color.RED
+            enableDashedLine(10f, 10f, 0f)
+            labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
+            textSize = 10f
+            textColor = Color.DKGRAY
+        }
+
+        // Create the Min Goal Line
+        val minTargetLine = LimitLine(500f, "Minimum Target").apply {
+            lineWidth = 2f
+            lineColor = Color.GREEN
+            labelPosition = LimitLine.LimitLabelPosition.RIGHT_BOTTOM
+            textSize = 10f
+            textColor = Color.DKGRAY
+        }
+
+        // Apply them to the chart
+        binding.expenseBarChart.apply {
+            axisLeft.addLimitLine(maxBudgetLine)
+            axisLeft.addLimitLine(minTargetLine)
+            axisLeft.axisMinimum = 0f
+            axisRight.isEnabled = false
+            description.isEnabled = false
+            setFitBars(true)
         }
     }
 

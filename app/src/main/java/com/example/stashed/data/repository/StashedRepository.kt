@@ -2,6 +2,7 @@ package com.example.stashed.data.repository
 
 import com.example.stashed.data.dao.CategoryDao
 import com.example.stashed.data.dao.ExpenseDao
+
 import com.example.stashed.data.dao.GoalDao
 import com.example.stashed.data.dao.UserDao
 import com.example.stashed.data.entities.Category
@@ -18,10 +19,20 @@ class StashedRepository(
     private val goalDao: GoalDao
 ) {
     // ── Users ──────────────────────────────────────────────────────────────
-    suspend fun insertUser(user: User): Long = userDao.insertUser(user)
-    suspend fun getUserByEmail(email: String): User? = userDao.getUserByEmail(email)
+    // ── Users ──────────────────────────────────────────────────────────────
+    // Changed to match your DAO's 'registerUser' method
+    suspend fun registerUser(user: User): Long = userDao.registerUser(user)
+
+    // Changed to search by username, matching your DAO
+    suspend fun getUserByUsername(username: String): User? = userDao.getUserByUsername(username)
+
+    // New method matching your DAO for login
+    suspend fun loginUser(username: String, password: String): User? = userDao.loginUser(username, password)
+
+    // Kept the same, this matches your DAO perfectly
     suspend fun getUserById(id: Int): User? = userDao.getUserById(id)
-    suspend fun updateUser(user: User) = userDao.updateUser(user)
+
+    // Note: If you have an 'updateUser' function in your app, make sure your UserDao has an @Update method for it!
 
     // ── Expenses ───────────────────────────────────────────────────────────
     suspend fun insertExpense(expense: Expense): Long = expenseDao.insertExpense(expense)

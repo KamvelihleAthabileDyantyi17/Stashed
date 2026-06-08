@@ -10,9 +10,9 @@ import java.util.concurrent.TimeUnit
 
 class StashedApplication : Application() {
 
-    val database by lazy { AppDatabase.getInstance(this) }
+    val database: AppDatabase by lazy { AppDatabase.getInstance(this) }
 
-    val repository by lazy {
+    val repository: StashedRepository by lazy {
         StashedRepository(
             database.userDao(),
             database.expenseDao(),
