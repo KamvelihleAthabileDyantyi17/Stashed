@@ -1,9 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="fragment_horizontal_margin">16dp</dimen>
-    <dimen name="item_transform_image_length">48dp</dimen>
-    <dimen name="reflow_text_block_max_percent">1</dimen>
-    <dimen name="reflow_text_block_horizontal_gap">8dp</dimen>
-    <dimen name="reflow_text_title_size">22sp</dimen>
-    <dimen name="reflow_text_description_size">13sp</dimen>
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_md">16dp</dimen>
+    <dimen name="spacing_lg">24dp</dimen>
+    <dimen name="spacing_xl">32dp</dimen>
+    <dimen name="spacing_xxl">48dp</dimen>
+
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="screen_padding">16dp</dimen>
+    <dimen name="border_width">2dp</dimen>
+    <dimen name="card_shadow_dx">4dp</dimen>
+    <dimen name="card_shadow_dy">4dp</dimen>
+    <dimen name="corner_radius">2dp</dimen>
+
+    <dimen name="text_xl">28sp</dimen>
+    <dimen name="text_lg">20sp</dimen>
+    <dimen name="text_md">16sp</dimen>
+    <dimen name="text_sm">14sp</dimen>
+    <dimen name="text_xs">12sp</dimen>
+    <dimen name="text_label">10sp</dimen>
+
+    <dimen name="fab_size">56dp</dimen>
+    <dimen name="bottom_nav_height">64dp</dimen>
+    <dimen name="progress_height">6dp</dimen>
 </resources>

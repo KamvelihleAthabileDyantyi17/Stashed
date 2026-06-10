@@ -23,4 +23,47 @@
         item
     </string>
     <string name="add_expense">Add Expense</string>
+    <string name="analytics">Analytics</string>
+    <string name="reports">Reports</string>
+    <string name="total_spent">Total Spent</string>
+    <string name="transactions">Transactions</string>
+    <string name="select_time_period">Select Time Period</string>
+    <string name="all_time">All Time</string>
+    <string name="empty_reports">No data available for the selected period.</string>
+    <string name="spending_by_category">Spending by Category</string>
+    <string name="category_breakdown_goals">Category Breakdown (Goals)</string>
+    <string name="default_total_spend">R 0.00</string>
+    <string name="default_transaction_count">0</string>
+    <string name="hint_category_name">Category Name</string>
+    <string name="hint_budget_limit">Budget Limit</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="hint_amount">Amount</string>
+    <string name="hint_note">Note (Optional)</string>
+    <string name="hint_goal_name">Goal Name</string>
+    <string name="hint_target_amount">Target Amount</string>
+    <string name="btn_pick_date">Pick Date</string>
+    <string name="no_date_selected">No date selected</string>
+    <string name="edit_limit_tip">Tap a category to edit its limit</string>
+    <string name="empty_budgets">No budgets set yet.</string>
+    <string name="empty_recent">No recent transactions.</string>
+    <string name="empty_goals">No goals found.</string>
+    <string name="login_title">Welcome Back</string>
+    <string name="login_subtitle">Sign in to continue</string>
+    <string name="hint_email">Email Address</string>
+    <string name="hint_password">Password</string>
+    <string name="btn_login">Login</string>
+    <string name="no_account">Don\'t have an account? Register</string>
+    <string name="register_title">Create Account</string>
+    <string name="hint_full_name">Full Name</string>
+    <string name="btn_register">Register</string>
+    <string name="have_account">Already have an account? Login</string>
+    <string name="btn_logout">Logout</string>
+    <string name="btn_contribute">Contribute</string>
+    <string name="btn_delete">Delete</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_budgets">Budgets</string>
+    <string name="nav_goals">Goals</string>
+    <string name="nav_reports">Reports</string>
+    <string name="nav_settings">Settings</string>
 </resources>
