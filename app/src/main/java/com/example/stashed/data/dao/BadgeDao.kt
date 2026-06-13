@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.example.stashed.data.entities.Badge
 
-
 @Dao
 interface BadgeDao {
 

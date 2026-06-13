@@ -43,6 +43,8 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.9.0")
     implementation("org.mindrot:jbcrypt:0.4") // This fixes the PasswordUtils / BCrypt errors
     implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("nl.dionsegijn:konfetti-xml:2.0.4")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     // Core Android Libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

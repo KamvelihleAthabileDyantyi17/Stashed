@@ -11,26 +11,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.stashed.ui.AddExpenseDialog
-import com.example.stashed.ui.SetBudgetDialog
-import com.example.stashed.ui.adapters.TransactionAdapter
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.example.stashed.ui.BadgesActivity
-
-// FIXED IMPORTS
 import com.example.stashed.data.AppDatabase
 import com.example.stashed.data.entities.BudgetGoal
 import com.example.stashed.data.entities.Expense
+import com.example.stashed.ui.AddExpenseDialog
+import com.example.stashed.ui.BadgeCelebrationActivity
+import com.example.stashed.ui.BadgesActivity
+import com.example.stashed.ui.GraphActivity
 import com.example.stashed.ui.LoginActivity
-
-import kotlinx.coroutines.flow.first
+import com.example.stashed.ui.SetBudgetDialog
+import com.example.stashed.ui.adapters.TransactionAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlinx.coroutines.flow.first
+
 
 class MainActivity : AppCompatActivity() {
 
-    // Views
     private lateinit var tvGreeting: TextView
     private lateinit var tvMonth: TextView
     private lateinit var tvBudgetAmount: TextView
@@ -45,11 +44,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fabAddExpense: FloatingActionButton
     private lateinit var btnSetBudget: Button
     private lateinit var btnLogout: Button
-
     private lateinit var btnViewBadges: Button
+    private lateinit var btnCompleteMonth: Button
+    private lateinit var btnViewGraph: Button
 
-
-    // State
     private lateinit var sharedPrefs: SharedPreferences
     private lateinit var transactionAdapter: TransactionAdapter
     private var userId = -1
@@ -62,7 +60,6 @@ class MainActivity : AppCompatActivity() {
         sharedPrefs = getSharedPreferences("StashedSession", MODE_PRIVATE)
         userId = sharedPrefs.getInt("userId", -1)
 
-        // If not logged in go back to login
         if (userId == -1) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
@@ -73,7 +70,6 @@ class MainActivity : AppCompatActivity() {
         setupRecyclerView()
         setupClickListeners()
 
-        // Greet the user
         val fullName  = sharedPrefs.getString("fullName", "there") ?: "there"
         val firstName = fullName.split(" ").firstOrNull() ?: fullName
         tvGreeting.text = "Hello, $firstName 👋"
@@ -102,7 +98,9 @@ class MainActivity : AppCompatActivity() {
         fabAddExpense     = findViewById(R.id.fabAddExpense)
         btnSetBudget      = findViewById(R.id.btnSetBudget)
         btnLogout         = findViewById(R.id.btnLogout)
-        btnViewBadges = findViewById(R.id.btnViewBadges)
+        btnViewBadges     = findViewById(R.id.btnViewBadges)
+        btnCompleteMonth  = findViewById(R.id.btnCompleteMonth)
+        btnViewGraph      = findViewById(R.id.btnViewGraph)
     }
 
     private fun setupRecyclerView() {
@@ -115,9 +113,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-
         btnViewBadges.setOnClickListener {
             startActivity(Intent(this, BadgesActivity::class.java))
+        }
+
+        btnCompleteMonth.setOnClickListener {
+            startActivity(Intent(this, BadgeCelebrationActivity::class.java))
+        }
+
+        btnViewGraph.setOnClickListener {
+            startActivity(Intent(this, GraphActivity::class.java))
         }
 
         fabAddExpense.setOnClickListener {
@@ -164,7 +169,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            // This call now works because of the import above
             val db         = AppDatabase.getDatabase(applicationContext)
             val budget     = db.budgetDao().getBudgetForMonth(userId, month, year)
             val totalSpent = db.expenseDao().getTotalSpendForMonth(
