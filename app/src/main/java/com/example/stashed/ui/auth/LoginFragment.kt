@@ -47,7 +47,7 @@ class LoginFragment : Fragment() {
                 is AuthResult.Loading -> binding.btnLogin.isEnabled = false
                 is AuthResult.Success -> {
                     val session = SessionManager(requireContext())
-                    session.login(result.user.userId, result.user.fullName)
+                    session.login(result.user.id, result.user.fullName)
                     findNavController().navigate(R.id.action_login_to_dashboard)
                     authViewModel.resetResult()
                 }

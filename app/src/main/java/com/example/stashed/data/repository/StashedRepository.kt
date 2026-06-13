@@ -56,6 +56,12 @@ class StashedRepository(
         return expenseDao.getTotalSpendForMonth(userId, start, end) ?: 0.0
     }
 
+    suspend fun pruneOldExpenses(userId: Int) {
+        // Example: Delete expenses older than 3 months
+        val threeMonthsAgo = System.currentTimeMillis() - (90L * 24 * 60 * 60 * 1000)
+        expenseDao.deleteExpensesBefore(userId, threeMonthsAgo)
+    }
+
     // ── Categories ─────────────────────────────────────────────────────────
     suspend fun insertCategory(category: Category): Long = categoryDao.insertCategory(category)
     suspend fun updateCategory(category: Category) = categoryDao.updateCategory(category)

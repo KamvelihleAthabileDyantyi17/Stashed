@@ -38,7 +38,8 @@ class ExpenseViewModel(
                     userId = userId,
                     categoryId = categoryId,
                     amount = amount,
-                    note = note.trim()
+                    description = note.trim(),
+                    date = System.currentTimeMillis()
                 )
                 repository.insertExpense(expense)
                 _saveResult.value = true

@@ -20,10 +20,11 @@ import com.example.stashed.data.entities.Expense
 import com.example.stashed.data.entities.User
 // Note: If you have a separate "Goal" entity, import it here too!
 
+import com.example.stashed.data.entities.Goal
+
 @Database(
-    // Note: If your repository uses a separate "Goal" entity, you might need to add Goal::class here
-    entities = [User::class, Expense::class, Category::class, BudgetGoal::class, Badge::class],
-    version = 1,
+    entities = [User::class, Expense::class, Category::class, BudgetGoal::class, Badge::class, Goal::class],
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -41,8 +42,8 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        // 👇 Fixed: Changed getDatabase to getInstance to match StashedApplication
-        fun getInstance(context: Context): AppDatabase {
+        // Use getDatabase to match usages across the app
+        fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,

@@ -23,6 +23,7 @@ import com.example.stashed.data.entities.BudgetGoal
 import com.example.stashed.data.entities.Expense
 import com.example.stashed.ui.LoginActivity
 
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -166,10 +167,10 @@ class MainActivity : AppCompatActivity() {
             // This call now works because of the import above
             val db         = AppDatabase.getDatabase(applicationContext)
             val budget     = db.budgetDao().getBudgetForMonth(userId, month, year)
-            val totalSpent = db.expenseDao().getTotalSpentForMonth(
+            val totalSpent = db.expenseDao().getTotalSpendForMonth(
                 userId, startCal.timeInMillis, endCal.timeInMillis
             )
-            val recentList = db.expenseDao().getRecentExpenses(userId, 10)
+            val recentList = db.expenseDao().getRecentExpenses(userId, 10).first()
 
             currentBudget = budget
 

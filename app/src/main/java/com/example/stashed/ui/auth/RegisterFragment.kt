@@ -48,7 +48,7 @@ class RegisterFragment : Fragment() {
                 is AuthResult.Loading -> binding.btnRegister.isEnabled = false
                 is AuthResult.Success -> {
                     val session = SessionManager(requireContext())
-                    session.login(result.user.userId, result.user.fullName)
+                    session.login(result.user.id, result.user.fullName)
                     findNavController().navigate(R.id.action_register_to_dashboard)
                     authViewModel.resetResult()
                 }

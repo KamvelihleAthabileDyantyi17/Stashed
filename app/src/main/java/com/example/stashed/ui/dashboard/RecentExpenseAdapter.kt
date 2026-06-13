@@ -16,7 +16,7 @@ class RecentExpenseAdapter(
 
     companion object {
         private val DIFF = object : DiffUtil.ItemCallback<Expense>() {
-            override fun areItemsTheSame(a: Expense, b: Expense) = a.expenseId == b.expenseId
+            override fun areItemsTheSame(a: Expense, b: Expense) = a.id == b.id
             override fun areContentsTheSame(a: Expense, b: Expense) = a == b
         }
     }
@@ -25,10 +25,10 @@ class RecentExpenseAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(expense: Expense) {
-            binding.tvNote.text = expense.note.ifBlank { "Expense" }
+            binding.tvNote.text = expense.description.ifBlank { "Expense" }
             binding.tvCategory.text = categoryNames[expense.categoryId] ?: "—"
             binding.tvAmount.text = CurrencyUtils.format(expense.amount)
-            binding.tvDate.text = DateUtils.formatDate(expense.dateAdded)
+            binding.tvDate.text = DateUtils.formatDate(expense.date)
         }
     }
 

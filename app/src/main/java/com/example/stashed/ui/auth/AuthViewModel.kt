@@ -17,8 +17,8 @@ sealed class AuthResult {
 
 class AuthViewModel(private val repository: StashedRepository) : ViewModel() {
 
-    private val _authResult = MutableLiveData<AuthResult>()
-    val authResult: LiveData<AuthResult> = _authResult
+    private val _authResult = MutableLiveData<AuthResult?>()
+    val authResult: LiveData<AuthResult?> = _authResult
 
     fun register(fullName: String, email: String, password: String) {
         _authResult.value = AuthResult.Loading
@@ -29,15 +29,15 @@ class AuthViewModel(private val repository: StashedRepository) : ViewModel() {
                 if (!email.contains("@")) { _authResult.value = AuthResult.Error("Enter a valid email address"); return@launch }
                 if (password.length < 8) { _authResult.value = AuthResult.Error("Password must be at least 8 characters"); return@launch }
 
-                val existing = repository.getUserByEmail(email)
+                val existing = repository.getUserByUsername(email)
                 if (existing != null) { _authResult.value = AuthResult.Error("An account with this email already exists"); return@launch }
 
                 val hash = PasswordUtils.hashPassword(password)
-                val user = User(fullName = fullName, email = email, passwordHash = hash)
-                val id = repository.insertUser(user)
+                val user = User(fullName = fullName, username = email, password = hash)
+                val id = repository.registerUser(user)
                 val created = repository.getUserById(id.toInt())
                 if (created != null) {
-                    repository.seedDefaultCategories(created.userId)
+                    repository.seedDefaultCategories(created.id)
                     _authResult.value = AuthResult.Success(created)
                 } else {
                     _authResult.value = AuthResult.Error("Registration failed. Please try again.")
@@ -55,8 +55,8 @@ class AuthViewModel(private val repository: StashedRepository) : ViewModel() {
                 if (!email.contains("@")) { _authResult.value = AuthResult.Error("Enter a valid email address"); return@launch }
                 if (password.isBlank()) { _authResult.value = AuthResult.Error("Password is required"); return@launch }
 
-                val user = repository.getUserByEmail(email)
-                if (user == null || !PasswordUtils.verifyPassword(password, user.passwordHash)) {
+                val user = repository.getUserByUsername(email)
+                if (user == null || !PasswordUtils.verifyPassword(password, user.password)) {
                     _authResult.value = AuthResult.Error("Incorrect email or password")
                     return@launch
                 }

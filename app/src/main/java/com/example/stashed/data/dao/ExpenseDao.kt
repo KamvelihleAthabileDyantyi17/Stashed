@@ -37,4 +37,7 @@ interface ExpenseDao {
     // 7. Fixed spelling to "Spend" to perfectly match your StashedRepository
     @Query("SELECT COALESCE(SUM(amount), 0) FROM expenses WHERE userId = :userId AND date BETWEEN :startMs AND :endMs")
     suspend fun getTotalSpendForMonth(userId: Int, startMs: Long, endMs: Long): Double
+
+    @Query("DELETE FROM expenses WHERE userId = :userId AND date < :beforeDate")
+    suspend fun deleteExpensesBefore(userId: Int, beforeDate: Long)
 }

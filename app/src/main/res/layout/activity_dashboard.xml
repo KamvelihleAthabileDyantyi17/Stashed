@@ -49,6 +49,17 @@
                         android:textColor="#888888"/>
                 </LinearLayout>
 
+                <!-- View Badges button -->
+                <Button
+                    android:id="@+id/btnViewBadges"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_view_badges"
+                    android:textSize="12sp"
+                    android:backgroundTint="#4CAF50"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginEnd="8dp"/>
+
                 <!-- Set budget button -->
                 <Button
                     android:id="@+id/btnSetBudget"
