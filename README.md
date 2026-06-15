@@ -28,7 +28,7 @@ This gives the user an instant visual of whether they are within
 their target spending range.
 
 ## Demo Video
-[Watch the full app demonstration here](https://youtu.be/Uns8vgwgfVw)
+[Watch the full app demonstration here]https://youtu.be/VxECFd8pKQ8
 
 ## GitHub Actions
 Automated build testing runs on every push via GitHub Actions.
