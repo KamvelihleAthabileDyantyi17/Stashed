@@ -50,4 +50,5 @@ Automated build testing runs on every push via GitHub Actions.
 - Member 1 (Katleho): Database foundation, Login/Register, 
   Badges, Gamification, Graph
 - Member 2: Expense capture, Categories
-- Member 3: Budget goals, Visual progress display
+- Member 3: Budget goals, Visual progress display<img width="720" height="1600" alt="WhatsApp Image 2026-06-15 at 13 16 40" src="https://github.com/user-attachments/assets/36472e74-eda7-4dc1-a63d-fbfbd8878124" />
+
