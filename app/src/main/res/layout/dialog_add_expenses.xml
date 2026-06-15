@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="24dp"
     android:background="#1E1E1E">
@@ -100,5 +100,12 @@
         android:backgroundTint="#FF3B30"
         android:textColor="#FFFFFF"
         tools:ignore="HardcodedText" />
-
+    <ImageButton
+        android:id="@+id/btn_scan_receipt"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_camera_alt"
+        android:contentDescription="Scan Receipt"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:tint="@color/white" />
 </LinearLayout>

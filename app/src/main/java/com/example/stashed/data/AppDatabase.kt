@@ -1,24 +1,25 @@
 package com.example.stashed.data
 
-
-
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.stashed.data.dao.UserDao
-
+import com.example.stashed.data.dao.BadgeDao
 import com.example.stashed.data.dao.BudgetDao
+import com.example.stashed.data.dao.CategoryDao
+import com.example.stashed.data.dao.ExpenseDao
+import com.example.stashed.data.dao.GoalDao
+import com.example.stashed.data.dao.UserDao
 import com.example.stashed.data.entities.Badge
 import com.example.stashed.data.entities.BudgetGoal
 import com.example.stashed.data.entities.Category
 import com.example.stashed.data.entities.Expense
-import com.example.stashed.data.entities.ExpenseDao
+import com.example.stashed.data.entities.Goal
 import com.example.stashed.data.entities.User
 
 @Database(
-    entities = [User::class, Expense::class, Category::class, BudgetGoal::class, Badge::class],
-    version = 1,
+    entities = [User::class, Expense::class, Category::class, BudgetGoal::class, Badge::class, Goal::class],
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -26,7 +27,9 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun expenseDao(): ExpenseDao
     abstract fun budgetDao(): BudgetDao
-
+    abstract fun badgeDao(): BadgeDao
+    abstract fun categoryDao(): CategoryDao
+    abstract fun goalDao(): GoalDao
 
     companion object {
         @Volatile
@@ -38,7 +41,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "stashed_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
                 instance
             }

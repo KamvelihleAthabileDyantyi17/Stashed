@@ -8,7 +8,8 @@ data class User(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val username: String,
-    val password: String,  // In a real app you'd hash this - fine for now
+    val password: String,
     val fullName: String,
-    val createdAt: Long = System.currentTimeMillis()
+    val email: String = "",
+    val dateRegistered: Long = System.currentTimeMillis()
 )

@@ -40,6 +40,11 @@ android {
 }
 
 dependencies {
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("org.mindrot:jbcrypt:0.4") // This fixes the PasswordUtils / BCrypt errors
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("nl.dionsegijn:konfetti-xml:2.0.4")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     // Core Android Libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -62,6 +67,10 @@ dependencies {
     // Additional Coroutines and Lifecycle support
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    // Charting Libraries
+    implementation(libs.anychart)
+    implementation(libs.mpandroidchart)
 
     // Testing
     testImplementation(libs.junit)

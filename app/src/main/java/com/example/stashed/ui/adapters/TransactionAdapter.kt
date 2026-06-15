@@ -10,10 +10,9 @@ import com.example.stashed.data.entities.Expense
 import java.text.SimpleDateFormat
 import java.util.*
 
-
-
 class TransactionAdapter(
-    private var expenses: List<Expense>
+    private var expenses: List<Expense>,
+    private val onDeleteExpense: (Expense) -> Unit = {}
 ) : RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
 
     private val dateFormat = SimpleDateFormat("dd MMM", Locale.getDefault())
@@ -37,6 +36,17 @@ class TransactionAdapter(
         holder.tvNote.text     = if (expense.description.isNotEmpty()) expense.description else "No description"
         holder.tvAmount.text   = "-R%.2f".format(expense.amount)
         holder.tvDate.text     = dateFormat.format(Date(expense.date))
+
+        // Long press to delete
+        holder.itemView.setOnLongClickListener {
+            android.app.AlertDialog.Builder(holder.itemView.context)
+                .setTitle("Delete Expense")
+                .setMessage("Delete \"${expense.description}\" (R%.2f)?".format(expense.amount))
+                .setPositiveButton("Delete") { _, _ -> onDeleteExpense(expense) }
+                .setNegativeButton("Cancel", null)
+                .show()
+            true
+        }
     }
 
     override fun getItemCount() = expenses.size

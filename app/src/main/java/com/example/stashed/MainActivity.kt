@@ -11,24 +11,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.stashed.ui.AddExpenseDialog
-import com.example.stashed.ui.SetBudgetDialog
-import com.example.stashed.ui.adapters.TransactionAdapter
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-
-// FIXED IMPORTS
 import com.example.stashed.data.AppDatabase
 import com.example.stashed.data.entities.BudgetGoal
 import com.example.stashed.data.entities.Expense
+import com.example.stashed.ui.AddExpenseDialog
+import com.example.stashed.ui.BadgeCelebrationActivity
+import com.example.stashed.ui.BadgesActivity
+import com.example.stashed.ui.GraphActivity
 import com.example.stashed.ui.LoginActivity
-
+import com.example.stashed.ui.SetBudgetDialog
+import com.example.stashed.ui.adapters.TransactionAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlinx.coroutines.flow.first
+
+
 
 class MainActivity : AppCompatActivity() {
 
-    // Views
     private lateinit var tvGreeting: TextView
     private lateinit var tvMonth: TextView
     private lateinit var tvBudgetAmount: TextView
@@ -43,12 +45,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fabAddExpense: FloatingActionButton
     private lateinit var btnSetBudget: Button
     private lateinit var btnLogout: Button
+    private lateinit var btnViewBadges: Button
+    private lateinit var btnCompleteMonth: Button
+    private lateinit var btnViewGraph: Button
 
-    // State
     private lateinit var sharedPrefs: SharedPreferences
     private lateinit var transactionAdapter: TransactionAdapter
     private var userId = -1
     private var currentBudget: BudgetGoal? = null
+    private lateinit var tvGoalStatus: TextView
+    private lateinit var progressGoal: ProgressBar
+    private lateinit var tvMinGoalLabel: TextView
+    private lateinit var tvMaxGoalLabel: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +65,6 @@ class MainActivity : AppCompatActivity() {
         sharedPrefs = getSharedPreferences("StashedSession", MODE_PRIVATE)
         userId = sharedPrefs.getInt("userId", -1)
 
-        // If not logged in go back to login
         if (userId == -1) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
@@ -68,11 +75,12 @@ class MainActivity : AppCompatActivity() {
         setupRecyclerView()
         setupClickListeners()
 
-        // Greet the user
         val fullName  = sharedPrefs.getString("fullName", "there") ?: "there"
         val firstName = fullName.split(" ").firstOrNull() ?: fullName
         tvGreeting.text = "Hello, $firstName 👋"
         tvMonth.text    = SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(Date())
+
+        android.util.Log.d("MainActivity", "Loading dashboard for userId: $userId")
 
         loadDashboard()
     }
@@ -97,10 +105,25 @@ class MainActivity : AppCompatActivity() {
         fabAddExpense     = findViewById(R.id.fabAddExpense)
         btnSetBudget      = findViewById(R.id.btnSetBudget)
         btnLogout         = findViewById(R.id.btnLogout)
+        btnViewBadges     = findViewById(R.id.btnViewBadges)
+        btnCompleteMonth  = findViewById(R.id.btnCompleteMonth)
+        btnViewGraph      = findViewById(R.id.btnViewGraph)
+        tvGoalStatus    = findViewById(R.id.tvGoalStatus)
+        progressGoal    = findViewById(R.id.progressGoal)
+        tvMinGoalLabel  = findViewById(R.id.tvMinGoalLabel)
+        tvMaxGoalLabel  = findViewById(R.id.tvMaxGoalLabel)
     }
 
     private fun setupRecyclerView() {
-        transactionAdapter = TransactionAdapter(emptyList())
+        transactionAdapter = TransactionAdapter(emptyList()) { expense ->
+            // Delete expense on long press confirmation
+            lifecycleScope.launch {
+                val db = AppDatabase.getDatabase(applicationContext)
+                db.expenseDao().deleteExpense(expense)
+                android.util.Log.d("MainActivity", "Deleted expense: ${expense.description}")
+                runOnUiThread { loadDashboard() }
+            }
+        }
         rvTransactions.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = transactionAdapter
@@ -109,6 +132,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
+        btnViewBadges.setOnClickListener {
+            startActivity(Intent(this, BadgesActivity::class.java))
+        }
+
+        btnCompleteMonth.setOnClickListener {
+            startActivity(Intent(this, BadgeCelebrationActivity::class.java))
+        }
+
+        btnViewGraph.setOnClickListener {
+            startActivity(Intent(this, GraphActivity::class.java))
+        }
 
         fabAddExpense.setOnClickListener {
             AddExpenseDialog(userId) { loadDashboard() }
@@ -137,6 +171,8 @@ class MainActivity : AppCompatActivity() {
         val cal   = Calendar.getInstance()
         val month = cal.get(Calendar.MONTH) + 1
         val year  = cal.get(Calendar.YEAR)
+        val income = sharedPrefs.getFloat("monthlyIncome", 0f).toDouble()
+
 
         val startCal = Calendar.getInstance().apply {
             set(Calendar.DAY_OF_MONTH, 1)
@@ -151,40 +187,46 @@ class MainActivity : AppCompatActivity() {
             set(Calendar.MINUTE, 59)
             set(Calendar.SECOND, 59)
             set(Calendar.MILLISECOND, 999)
+
+
         }
 
         lifecycleScope.launch {
-            // This call now works because of the import above
             val db         = AppDatabase.getDatabase(applicationContext)
             val budget     = db.budgetDao().getBudgetForMonth(userId, month, year)
-            val totalSpent = db.expenseDao().getTotalSpentForMonth(
+            val totalSpent = db.expenseDao().getTotalSpendForMonth(
                 userId, startCal.timeInMillis, endCal.timeInMillis
             )
-            val recentList = db.expenseDao().getRecentExpenses(userId, 10)
+            val recentList = db.expenseDao().getRecentExpenses(userId, 10).first()
+
 
             currentBudget = budget
 
             runOnUiThread {
-                updateBudgetCard(budget, totalSpent)
+                updateBudgetCard(budget, totalSpent, income)
                 updateTransactionList(recentList)
             }
+
         }
     }
 
-    private fun updateBudgetCard(budget: BudgetGoal?, totalSpent: Double) {
+    private fun updateBudgetCard(budget: BudgetGoal?, totalSpent: Double, income: Double = 0.0) {
         val budgetAmount = budget?.maximumGoal ?: 0.0
         val remaining    = budgetAmount - totalSpent
 
+
         tvBudgetAmount.text    = "R%.2f".format(budgetAmount)
         tvSpentAmount.text     = "R%.2f".format(totalSpent)
-        tvIncomeAmount.text    = "R0.00"
+        tvIncomeAmount.text = "R%.2f".format(income)
         tvRemainingAmount.text = if (remaining >= 0) "R%.2f".format(remaining)
         else "-R%.2f".format(-remaining)
 
         tvRemainingAmount.setTextColor(
             if (remaining < 0) getColor(android.R.color.holo_red_light)
             else getColor(android.R.color.holo_green_light)
+
         )
+
 
         if (budgetAmount > 0) {
             val percent = ((totalSpent / budgetAmount) * 100).toInt().coerceIn(0, 100)
@@ -200,6 +242,37 @@ class MainActivity : AppCompatActivity() {
             progressBudget.progress    = 0
             tvProgressPercent.text     = "No budget set"
             tvBudgetWarning.visibility = View.GONE
+
+        }
+
+        // Goal progress display
+        val minGoal = budget?.minimumGoal ?: 0.0
+        val maxGoal = budget?.maximumGoal ?: 0.0
+
+        tvMinGoalLabel.text = "Min: R%.2f".format(minGoal)
+        tvMaxGoalLabel.text = "Max: R%.2f".format(maxGoal)
+
+        if (maxGoal > 0) {
+            val goalPercent = ((totalSpent / maxGoal) * 100).toInt().coerceIn(0, 100)
+            progressGoal.progress = goalPercent
+
+            when {
+                totalSpent > maxGoal -> {
+                    tvGoalStatus.text = "⚠️ Over maximum budget!"
+                    tvGoalStatus.setTextColor(getColor(android.R.color.holo_red_light))
+                }
+                totalSpent >= minGoal -> {
+                    tvGoalStatus.text = "✅ Within your goal range"
+                    tvGoalStatus.setTextColor(getColor(android.R.color.holo_green_light))
+                }
+                else -> {
+                    tvGoalStatus.text = "📊 Below minimum goal — keep tracking"
+                    tvGoalStatus.setTextColor(0xFFFFD700.toInt())
+                }
+            }
+        } else {
+            tvGoalStatus.text = "Set a budget to see your progress"
+            tvGoalStatus.setTextColor(0xFF888888.toInt())
         }
     }
 

@@ -27,4 +27,12 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
+    <color name="offWhite">#F8F9FA</color>
+    <color name="textMuted">#888888</color>
+    <color name="textSecondary">#666666</color>
+    <color name="semanticDanger">#D62828</color>
+    <color name="semanticWarning">#D4870A</color>
+    <color name="semanticSuccess">#2EA87E</color>
+    <color name="progressTrack">#E0E0E0</color>
+    <color name="borderLight">#E8ECF2</color>
 </resources>
