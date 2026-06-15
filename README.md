@@ -1,33 +1,53 @@
-# Personal Budget Planner
+# Stashed — Personal Budget Planner
 
-## Overview
-The Personal Budget Planner is an Android application built with Kotlin designed to help users manage their personal finances effectively. The app allows users to track their income, expenses, and savings, providing insights into their financial health.
+A personal budget tracking Android app built in Kotlin using Room Database.
 
-## Features
-- **User-Friendly Interface**: The app offers an intuitive interface for easy navigation.
-- **Expense Tracking**: Users can log their expenses and categorize them for better analysis.
-- **Income Tracking**: Users can input their income sources to keep track of total earnings.
-- **Budget Planning**: Set budgeting goals for various categories and track progress.
-- **Financial Insights**: Get reports and insights into spending patterns and recommendations for improvement.
+## App Features
+- User registration and secure login
+- Add and categorise expenses
+- Set monthly minimum and maximum budget goals
+- Dashboard showing spending progress with warnings
+- Spending graph with min/max goal lines
+- Gamification: earn badges for completing monthly budget goals
+- Budget Champion badge with confetti celebration
+- Visual progress tracking against budget goals
+
+## Custom Features
+
+### Feature 1: Badge Celebration System
+When the user taps "Complete Budget for the Month", a full-screen 
+celebration appears with animated confetti and a Budget Champion badge. 
+The badge is saved to the database so the user can view all earned 
+badges in the Badges screen. This was built to make budgeting feel 
+rewarding and motivating, similar to Samsung Health's step goal celebration.
+
+### Feature 2: Spending Graph with Goal Lines
+A bar chart showing total spending for the current month, with 
+horizontal lines marking the minimum and maximum budget goals. 
+This gives the user an instant visual of whether they are within 
+their target spending range.
+
+## Demo Video
+[Watch the full app demonstration here](https://youtu.be/Uns8vgwgfVw)
+
+## GitHub Actions
+Automated build testing runs on every push via GitHub Actions.
+
+## How to Run
+1. Clone this repository
+2. Open in Android Studio
+3. Build and run on a physical Android device
 
 ## Technologies Used
-- **Kotlin**: The primary language used for application development.
-- **Android SDK**: The software development kit for building Android apps.
-- **SQLite**: A lightweight database used for storing user data.
+- Kotlin
+- Android Room Database
+- MPAndroidChart (graphs)
+- Konfetti (confetti animation)
+- WorkManager (background budget checks)
+- GitHub Actions (CI/CD)
 
-## Getting Started
-1. **Clone the repository**: `git clone https://github.com/KamvelihleAthabileDyantyi17/Stashed.git`
-2. **Open the project in Android Studio.**
-3. **Build the project** and run it on your Android device or emulator.
-
-## Usage
-- Launch the app and create an account or log in.
-- Start adding expenses and income to track your financial habits.
-- Set budget limits and monitor your progress through the dashboard.
-- 👉PRESENTATION LINK FOR APP: https://youtu.be/Uns8vgwgfVw
-
-## Contributing
-Contributions are welcome! Please fork the repository and submit a pull request with your improvements or bug fixes.
-
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+## Team
+- Member 1 (Katleho): Database foundation, Login/Register, 
+  Badges, Gamification, Graph
+- Member 2: Expense capture, Categories
+- Member 3: Budget goals, Visual progress display
