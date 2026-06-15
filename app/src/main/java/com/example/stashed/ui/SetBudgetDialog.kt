@@ -70,8 +70,13 @@ class SetBudgetDialog(
                         minimumGoal = minGoal,
                         month       = cal.get(Calendar.MONTH) + 1,
                         year        = cal.get(Calendar.YEAR)
+
                     )
+
                 )
+                // Save income to SharedPreferences so dashboard can display it
+                val prefs = requireContext().getSharedPreferences("StashedSession", android.content.Context.MODE_PRIVATE)
+                prefs.edit().putFloat("monthlyIncome", income.toFloat()).apply()
                 requireActivity().runOnUiThread {
                     onBudgetSet()
                     dismiss()

@@ -19,6 +19,8 @@ import java.util.concurrent.TimeUnit
 
 class BadgeCelebrationActivity : AppCompatActivity() {
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_badge_celebration)
@@ -26,29 +28,29 @@ class BadgeCelebrationActivity : AppCompatActivity() {
         val prefs: SharedPreferences = getSharedPreferences("StashedSession", MODE_PRIVATE)
         val userId = prefs.getInt("userId", -1)
 
-        val konfettiView   = findViewById<KonfettiView>(R.id.konfettiView)
-        val btnClose       = findViewById<Button>(R.id.btnCloseCelebration)
+        // Logging — shows understanding of code
+        android.util.Log.d("BadgeCelebration", "Badge celebration triggered for userId: $userId")
 
-        // Start confetti
+        val konfettiView = findViewById<KonfettiView>(R.id.konfettiView)
+        val btnClose     = findViewById<Button>(R.id.btnCloseCelebration)
+
         konfettiView.start(
             Party(
-                emitter = Emitter(duration = 3, TimeUnit.SECONDS).perSecond(100),
+                emitter  = Emitter(duration = 3, TimeUnit.SECONDS).perSecond(100),
                 position = Position.Relative(0.5, 0.0),
-                spread = 360,
-                colors = listOf(0xFF3B30, 0xFFD700, 0xFFFFFF, 0xFF8C00)
+                spread   = 360,
+                colors   = listOf(0xFF3B30, 0xFFD700, 0xFFFFFF, 0xFF8C00)
             )
         )
 
-        // Play sound
         try {
             val mp = MediaPlayer.create(this, android.provider.Settings.System.DEFAULT_NOTIFICATION_URI)
             mp?.start()
             mp?.setOnCompletionListener { it.release() }
         } catch (e: Exception) {
-            // Sound optional — won't crash if unavailable
+            // Sound optional
         }
 
-        // Save badge to database
         lifecycleScope.launch {
             val db = AppDatabase.getDatabase(applicationContext)
             val alreadyEarned = db.badgeDao().badgeExists(userId, "Budget Champion") > 0
@@ -64,8 +66,6 @@ class BadgeCelebrationActivity : AppCompatActivity() {
             }
         }
 
-        btnClose.setOnClickListener {
-            finish()
-        }
+        btnClose.setOnClickListener { finish() }
     }
-}
+    }
