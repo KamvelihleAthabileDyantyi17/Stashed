@@ -2,7 +2,8 @@
 <resources>
     <!-- Add this missing default dimension here -->
     <dimen name="fragment_horizontal_margin">16dp</dimen>
-
+    <!-- Add this missing dimension -->
+    <dimen name="item_transform_image_length">100dp</dimen>
     <dimen name="spacing_xs">4dp</dimen>
     <dimen name="spacing_sm">8dp</dimen>
     <dimen name="spacing_md">16dp</dimen>
