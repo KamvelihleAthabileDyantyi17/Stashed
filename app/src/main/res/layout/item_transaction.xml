@@ -1,72 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
-    app:cardBackgroundColor="#1E1E1E">
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingVertical="11dp"
+    android:background="#050506">
 
+    <!-- Icon Circle -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvIconBackground"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="#221111"
+        app:cardElevation="0dp">
+
+        <TextView
+            android:id="@+id/tvIcon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="🛒"
+            android:textSize="18sp" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Text Details -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="14dp"
-        android:gravity="center_vertical">
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="12dp">
 
-        <!-- Left: category + note -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvTransactionCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Food"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:textColor="#FFFFFF"/>
-
-            <TextView
-                android:id="@+id/tvTransactionNote"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Note"
-                android:textSize="12sp"
-                android:textColor="#888888"
-                android:maxLines="1"
-                android:ellipsize="end"/>
-        </LinearLayout>
-
-        <!-- Right: amount + date -->
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvTransactionTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="end">
+            android:text="Woolworths"
+            android:textColor="#F4F0E6"
+            android:textSize="13.5sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvTransactionAmount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-R0.00"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:textColor="#FF3B30"/>
-
-            <TextView
-                android:id="@+id/tvTransactionDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="24 Apr"
-                android:textSize="11sp"
-                android:textColor="#888888"/>
-        </LinearLayout>
-
+        <TextView
+            android:id="@+id/tvTransactionSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:text="Groceries · Today"
+            android:textColor="#8B8A8E"
+            android:textSize="11.5sp" />
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+
+    <!-- Amount -->
+    <TextView
+        android:id="@+id/tvTransactionAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-R412"
+        android:textColor="#FF6B5E"
+        android:textSize="13.5sp"
+        android:textStyle="bold" />
+
+</LinearLayout>
