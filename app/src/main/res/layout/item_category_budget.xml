@@ -1,74 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Sharp Editorial category budget item card -->
-<LinearLayout
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/bg_card"
-    android:padding="14dp"
     android:layout_marginBottom="10dp"
-    android:layout_marginEnd="4dp">
+    app:cardBackgroundColor="#111113"
+    app:cardCornerRadius="20dp"
+    app:strokeColor="#232326"
+    app:strokeWidth="1dp">
 
-    <!-- Row: name + percentage -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvCategoryName"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:textStyle="bold"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="9dp">
 
-        <TextView
-            android:id="@+id/tvPercent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:textColor="@color/semanticSuccess"/>
+            <!-- Icon Circle (You'll map the colors programmatically in your Adapter) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvCategoryIconBg"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                app:cardCornerRadius="10dp"
+                app:cardBackgroundColor="#221111"
+                app:cardElevation="0dp">
+
+                <TextView
+                    android:id="@+id/tvCategoryIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="🛒"
+                    android:textSize="14sp" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tvCategoryTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:text="Groceries"
+                android:textColor="#F4F0E6"
+                android:textSize="13.5sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="baseline">
+
+                <TextView
+                    android:id="@+id/tvCategorySpent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="R850 "
+                    android:textColor="#F4F0E6"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvCategoryLimit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/ R1,200"
+                    android:textColor="#8B8A8E"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Progress Bar -->
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progressCategory"
+            android:layout_width="match_parent"
+            android:layout_height="7dp"
+            android:progress="71"
+            app:indicatorColor="#FF6B5E"
+            app:trackColor="#1A1A1D"
+            app:trackCornerRadius="100dp" />
+
     </LinearLayout>
-
-    <!-- Progress bar -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="6dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="8dp"
-        android:max="100"
-        android:progress="0"
-        android:progressBackgroundTint="@color/progressTrack"
-        android:progressTint="@color/semanticSuccess"/>
-
-    <!-- Row: spent + limit -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tvSpent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="13sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/tvLimit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:textColor="@color/textSecondary"
-            android:textSize="13sp"/>
-    </LinearLayout>
-
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -1,87 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/offWhite">
+    android:background="#050506"
+    android:padding="22dp">
 
-    <!-- Header -->
+    <!-- Top Bar -->
     <LinearLayout
-        android:id="@+id/header"
+        android:id="@+id/topBarBudgets"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="BUDGETS"
-            android:textColor="@color/white"
-            android:textSize="11sp"
-            android:letterSpacing="0.12"
-            android:textAllCaps="true"/>
+            android:layout_weight="1"
+            android:text="Budgets"
+            android:textColor="#F4F0E6"
+            android:textSize="17sp"
+            android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Manage Categories"
-            android:textColor="@color/white"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:layout_marginTop="4dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/edit_limit_tip"
-            android:textColor="@color/textMuted"
-            android:textSize="12sp"
-            android:layout_marginTop="4dp"/>
+        <!-- Add Button -->
+        <ImageButton
+            android:id="@+id/btnAddBudget"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="@drawable/bg_surface_rounded"
+            android:src="@drawable/ic_plus"
+            app:tint="#F4F0E6" />
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
-        android:clipToPadding="false"
-        android:paddingBottom="80dp">
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        android:layout_marginTop="18dp"
+        app:layout_constraintTop_toBottomOf="@id/topBarBudgets"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvEmpty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No categories yet."
-                android:textColor="@color/textMuted"
-                android:textSize="14sp"
-                android:visibility="gone"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvCategories"
+            <!-- Segmented Month Selector -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"/>
+                android:orientation="horizontal"
+                android:background="@drawable/bg_segmented_track"
+                android:padding="3dp"
+                android:layout_marginBottom="18dp">
+
+                <TextView
+                    android:id="@+id/tvMonth1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingVertical="8dp"
+                    android:text="Jul"
+                    android:textColor="#8B8A8E"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvMonth2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_segmented_active"
+                    android:gravity="center"
+                    android:paddingVertical="8dp"
+                    android:text="Aug"
+                    android:textColor="#0A0A0B"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvMonth3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingVertical="8dp"
+                    android:text="Sep"
+                    android:textColor="#8B8A8E"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Overall Budget Summary Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                app:cardBackgroundColor="#111113"
+                app:cardCornerRadius="20dp"
+                app:strokeColor="#232326"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="16dp">
+
+                    <!-- Circular Progress Ring -->
+                    <FrameLayout
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:layout_marginEnd="14dp">
+
+                        <com.google.android.material.progressindicator.CircularProgressIndicator
+                            android:id="@+id/progressTotalBudget"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:progress="71"
+                            app:indicatorColor="#E2B13C"
+                            app:trackColor="#1A1A1D"
+                            app:trackThickness="5dp"
+                            app:indicatorSize="52dp" />
+
+                        <TextView
+                            android:id="@+id/tvTotalProgress"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="71%"
+                            android:textColor="#F4F0E6"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Spent this month"
+                            android:textColor="#8B8A8E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvTotalSpent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="R2,840"
+                            android:textColor="#F4F0E6"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvTotalLimit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="of R4,000"
+                            android:textColor="#8B8A8E"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- RecyclerView for Budget Categories -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvBudgetCategories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
         </LinearLayout>
     </ScrollView>
 
+    <!-- Floating Action Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="24dp"
-        android:contentDescription="Add Category"
-        android:backgroundTint="@color/black"
-        app:tint="@color/white"
-        android:src="@android:drawable/ic_input_add"
-        app:elevation="0dp"/>
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#F4F0E6"
+        android:src="@drawable/ic_plus"
+        app:tint="#0A0A0B"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
