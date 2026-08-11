@@ -1,108 +1,261 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/offWhite"
-    android:fillViewport="true">
+    android:background="#050506"
+    android:padding="22dp">
 
+    <!-- Top Bar -->
     <LinearLayout
+        android:id="@+id/topBarSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Dark profile header -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/black"
-            android:orientation="vertical"
-            android:padding="24dp"
-            android:gravity="center">
+            android:layout_weight="1"
+            android:text="Settings"
+            android:textColor="#F4F0E6"
+            android:textSize="17sp"
+            android:textStyle="bold" />
 
-            <!-- Avatar placeholder -->
-            <FrameLayout
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:background="@drawable/bg_card_dark"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/tvInitial"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="S"
-                    android:textColor="@color/white"
-                    android:textSize="28sp"
-                    android:textStyle="bold"/>
-            </FrameLayout>
-
-            <TextView
-                android:id="@+id/tvUserName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="—"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/tvUserEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="—"
-                android:textColor="@color/textMuted"
-                android:textSize="13sp"/>
-
-            <TextView
-                android:id="@+id/tvMemberSince"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/textMuted"
-                android:textSize="11sp"
-                android:letterSpacing="0.04"/>
-        </LinearLayout>
-
-        <!-- Section divider -->
         <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/black"/>
+            android:layout_width="34dp"
+            android:layout_height="34dp" />
+    </LinearLayout>
 
-        <!-- Logout section -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        android:layout_marginTop="18dp"
+        app:layout_constraintTop_toBottomOf="@id/topBarSettings"
+        app:layout_constraintBottom_toBottomOf="parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:orientation="vertical">
 
+            <!-- Profile Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="22dp"
+                app:cardBackgroundColor="#111113"
+                app:cardCornerRadius="20dp"
+                app:strokeColor="#232326"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="16dp">
+
+                    <!-- Avatar -->
+                    <TextView
+                        android:id="@+id/tvAvatar"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/bg_avatar"
+                        android:gravity="center"
+                        android:text="A"
+                        android:textColor="#E2B13C"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_marginEnd="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvProfileName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Alex Naidoo"
+                            android:textColor="#F4F0E6"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvProfileEmail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="alex@stashed.app"
+                            android:textColor="#8B8A8E"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="#5C5B60" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ACCOUNT GROUP -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ACCOUNT"
-                android:textColor="@color/textSecondary"
-                android:textSize="10sp"
-                android:letterSpacing="0.12"
-                android:textAllCaps="true"
+                android:textColor="#5C5B60"
+                android:textSize="11sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="8dp" />
 
-            <com.google.android.material.button.MaterialButton
+            <!-- Row: Edit Profile -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="12dp"
+                android:paddingHorizontal="4dp">
+
+                <ImageView android:layout_width="17dp" android:layout_height="17dp" android:src="@drawable/ic_profile" app:tint="#8B8A8E" android:layout_marginEnd="12dp"/>
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Edit profile" android:textColor="#F4F0E6" android:textSize="13.5sp" />
+                <ImageView android:layout_width="15dp" android:layout_height="15dp" android:src="@drawable/ic_chevron_right" app:tint="#5C5B60" />
+            </LinearLayout>
+
+            <!-- Row: Change Password -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="12dp"
+                android:paddingHorizontal="4dp"
+                android:layout_marginBottom="20dp">
+
+                <ImageView android:layout_width="17dp" android:layout_height="17dp" android:src="@drawable/ic_lock" app:tint="#8B8A8E" android:layout_marginEnd="12dp"/>
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Change password" android:textColor="#F4F0E6" android:textSize="13.5sp" />
+                <ImageView android:layout_width="15dp" android:layout_height="15dp" android:src="@drawable/ic_chevron_right" app:tint="#5C5B60" />
+            </LinearLayout>
+
+
+            <!-- PREFERENCES GROUP -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PREFERENCES"
+                android:textColor="#5C5B60"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Row: Currency -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="12dp"
+                android:paddingHorizontal="4dp">
+
+                <ImageView android:layout_width="17dp" android:layout_height="17dp" android:src="@drawable/ic_currency" app:tint="#8B8A8E" android:layout_marginEnd="12dp"/>
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Currency" android:textColor="#F4F0E6" android:textSize="13.5sp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ZAR (R)" android:textColor="#8B8A8E" android:textSize="12.5sp" android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Row: Notifications (Toggle) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="12dp"
+                android:paddingHorizontal="4dp">
+
+                <ImageView android:layout_width="17dp" android:layout_height="17dp" android:src="@drawable/ic_bell" app:tint="#8B8A8E" android:layout_marginEnd="12dp"/>
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Notifications" android:textColor="#F4F0E6" android:textSize="13.5sp" />
+
+                <!-- Custom Toggle Switch implementation -->
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchNotifications"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    app:useMaterialThemeColors="false"
+                    app:thumbTint="@color/selector_switch_thumb"
+                    app:trackTint="@color/selector_switch_track" />
+            </LinearLayout>
+
+            <!-- Row: Dark Theme (Toggle) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="12dp"
+                android:paddingHorizontal="4dp"
+                android:layout_marginBottom="20dp">
+
+                <ImageView android:layout_width="17dp" android:layout_height="17dp" android:src="@drawable/ic_moon" app:tint="#8B8A8E" android:layout_marginEnd="12dp"/>
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Dark theme" android:textColor="#F4F0E6" android:textSize="13.5sp" />
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchDarkTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    app:useMaterialThemeColors="false"
+                    app:thumbTint="@color/selector_switch_thumb"
+                    app:trackTint="@color/selector_switch_track" />
+            </LinearLayout>
+
+
+            <!-- SUPPORT GROUP -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SUPPORT"
+                android:textColor="#5C5B60"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Row: Help Centre -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="12dp"
+                android:paddingHorizontal="4dp"
+                android:layout_marginBottom="20dp">
+
+                <ImageView android:layout_width="17dp" android:layout_height="17dp" android:src="@drawable/ic_help" app:tint="#8B8A8E" android:layout_marginEnd="12dp"/>
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Help centre" android:textColor="#F4F0E6" android:textSize="13.5sp" />
+                <ImageView android:layout_width="15dp" android:layout_height="15dp" android:src="@drawable/ic_chevron_right" app:tint="#5C5B60" />
+            </LinearLayout>
+
+            <!-- Log Out Button -->
+            <LinearLayout
                 android:id="@+id/btnLogout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_logout"
-                android:backgroundTint="@color/semanticDanger"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:letterSpacing="0.08"
-                android:paddingTop="14dp"
-                android:paddingBottom="14dp"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                app:cornerRadius="2dp"/>
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="12dp"
+                android:paddingHorizontal="4dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView android:layout_width="17dp" android:layout_height="17dp" android:src="@drawable/ic_logout" app:tint="#FF6B5E" android:layout_marginEnd="10dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Log out" android:textColor="#FF6B5E" android:textSize="13sp" android:textStyle="bold" />
+            </LinearLayout>
+
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

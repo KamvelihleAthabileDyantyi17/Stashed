@@ -1,176 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/offWhite">
+    android:background="#050506"
+    android:padding="22dp">
 
+    <!-- Top Bar -->
     <LinearLayout
+        android:id="@+id/topBarReports"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Reports"
+            android:textColor="#F4F0E6"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/btnReportsFilter"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="@drawable/bg_surface_rounded"
+            android:src="@drawable/ic_chart"
+            app:tint="#F4F0E6" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        android:layout_marginTop="18dp"
+        app:layout_constraintTop_toBottomOf="@id/topBarReports"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/black"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/analytics"
-                android:textColor="@color/white"
-                android:textSize="11sp"
-                android:letterSpacing="0.12"
-                android:textAllCaps="true"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/reports"
-                android:textColor="@color/white"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:layout_marginTop="4dp"/>
-
+            <!-- Segmented Time Selector -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="16dp"
-                android:baselineAligned="false">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/total_spent"
-                        android:textColor="@color/textMuted"
-                        android:textSize="11sp"
-                        android:letterSpacing="0.1"
-                        android:textAllCaps="true"/>
-
-                    <TextView
-                        android:id="@+id/tvTotalSpend"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/default_total_spend"
-                        android:textColor="@color/white"
-                        android:textSize="20sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/transactions"
-                        android:textColor="@color/textMuted"
-                        android:textSize="11sp"
-                        android:letterSpacing="0.1"
-                        android:textAllCaps="true"/>
-
-                    <TextView
-                        android:id="@+id/tvTransactionCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/default_transaction_count"
-                        android:textColor="@color/white"
-                        android:textSize="20sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="24dp"
-                android:baselineAligned="false">
-
-                <Button
-                    android:id="@+id/btnSelectDateRange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/select_time_period"
-                    android:textColor="@color/white"
-                    android:backgroundTint="@color/black" />
+                android:background="@drawable/bg_segmented_track"
+                android:padding="3dp"
+                android:layout_marginBottom="18dp">
 
                 <TextView
-                    android:id="@+id/tvSelectedDates"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tvFilterWeek"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="@string/all_time"
-                    android:textColor="@color/textMuted"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingVertical="8dp"
+                    android:text="Week"
+                    android:textColor="#8B8A8E"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvFilterMonth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_segmented_active"
+                    android:gravity="center"
+                    android:paddingVertical="8dp"
+                    android:text="Month"
+                    android:textColor="#0A0A0B"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvFilterYear"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingVertical="8dp"
+                    android:text="Year"
+                    android:textColor="#8B8A8E"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvEmpty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/empty_reports"
-                android:textColor="@color/textMuted"
-                android:textSize="14sp"
-                android:visibility="gone"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="32dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/spending_by_category"
-                android:textColor="@color/textSecondary"
-                android:textSize="11sp"
-                android:letterSpacing="0.12"
-                android:textAllCaps="true"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
-
-            <com.anychart.AnyChartView
-                android:id="@+id/anyChartPie"
+            <!-- Bar Chart -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="280dp"
-                android:layout_marginBottom="24dp"/>
+                android:layout_height="120dp"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+                android:layout_marginBottom="8dp"
+                android:paddingHorizontal="4dp">
 
+                <!-- You'll typically populate these heights dynamically in Kotlin, but here is the structure -->
+                <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="bottom|center_horizontal">
+                    <View android:layout_width="match_parent" android:layout_height="38dp" android:background="@drawable/bg_chart_bar_inactive" android:layout_marginHorizontal="4dp" android:layout_marginBottom="8dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="M" android:textColor="#5C5B60" android:textSize="10sp" android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="bottom|center_horizontal">
+                    <View android:layout_width="match_parent" android:layout_height="62dp" android:background="@drawable/bg_chart_bar_inactive" android:layout_marginHorizontal="4dp" android:layout_marginBottom="8dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="T" android:textColor="#5C5B60" android:textSize="10sp" android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="bottom|center_horizontal">
+                    <View android:layout_width="match_parent" android:layout_height="45dp" android:background="@drawable/bg_chart_bar_inactive" android:layout_marginHorizontal="4dp" android:layout_marginBottom="8dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="W" android:textColor="#5C5B60" android:textSize="10sp" android:textStyle="bold"/>
+                </LinearLayout>
+
+                <!-- Active Bar -->
+                <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="bottom|center_horizontal">
+                    <View android:layout_width="match_parent" android:layout_height="88dp" android:background="@drawable/bg_chart_bar_active" android:layout_marginHorizontal="4dp" android:layout_marginBottom="8dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="T" android:textColor="#5C5B60" android:textSize="10sp" android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="bottom|center_horizontal">
+                    <View android:layout_width="match_parent" android:layout_height="30dp" android:background="@drawable/bg_chart_bar_inactive" android:layout_marginHorizontal="4dp" android:layout_marginBottom="8dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="F" android:textColor="#5C5B60" android:textSize="10sp" android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="bottom|center_horizontal">
+                    <View android:layout_width="match_parent" android:layout_height="70dp" android:background="@drawable/bg_chart_bar_inactive" android:layout_marginHorizontal="4dp" android:layout_marginBottom="8dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="S" android:textColor="#5C5B60" android:textSize="10sp" android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="bottom|center_horizontal">
+                    <View android:layout_width="match_parent" android:layout_height="22dp" android:background="@drawable/bg_chart_bar_inactive" android:layout_marginHorizontal="4dp" android:layout_marginBottom="8dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="S" android:textColor="#5C5B60" android:textSize="10sp" android:textStyle="bold"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Insight Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp"
+                app:cardBackgroundColor="#241C09"
+                app:cardCornerRadius="20dp"
+                app:strokeColor="#3A3016"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:src="@drawable/ic_insight"
+                        app:tint="#E2B13C"
+                        android:layout_marginEnd="10dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="You spent 18% more on Groceries this month than last."
+                        android:textColor="#F4F0E6"
+                        android:textSize="12sp"
+                        android:lineSpacingExtra="4dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Category Section Header -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/category_breakdown_goals"
-                android:textColor="@color/textSecondary"
-                android:textSize="11sp"
-                android:letterSpacing="0.12"
-                android:textAllCaps="true"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"
+                android:text="BY CATEGORY"
+                android:textColor="#8B8A8E"
+                android:textSize="11.5sp"
+                android:textStyle="bold" />
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/expenseBarChart"
+            <!-- RecyclerView for Report Categories -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvReportCategories"
                 android:layout_width="match_parent"
-                android:layout_height="280dp"
-                android:layout_marginBottom="16dp"/>
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
 
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

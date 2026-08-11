@@ -1,133 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
-    android:fillViewport="true">
+    android:background="#050506"
+    android:padding="26dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
             android:text="STASHED"
-            android:textColor="@color/white"
-            android:textSize="13sp"
+            android:textColor="#E2B13C"
+            android:textSize="11sp"
             android:textStyle="bold"
-            android:letterSpacing="0.16"/>
+            android:letterSpacing="0.1" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/register_title"
-            android:textColor="@color/white"
-            android:textSize="36sp"
+            android:text="Create account"
+            android:textColor="#F4F0E6"
+            android:textSize="21sp"
             android:textStyle="bold"
-            android:lineSpacingMultiplier="1.1"/>
+            android:layout_marginTop="8dp" />
 
-        <View
-            android:layout_width="48dp"
-            android:layout_height="2dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            android:background="@color/white"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start tracking in under a minute"
+            android:textColor="#8B8A8E"
+            android:textSize="13sp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="24dp" />
 
-        <!-- Full Name -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilFullName"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <!-- Input: Full Name -->
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:hint="@string/hint_full_name"
-            app:boxStrokeColor="@color/white"
-            app:boxCornerRadiusTopStart="2dp"
-            app:boxCornerRadiusTopEnd="2dp"
-            app:boxCornerRadiusBottomStart="2dp"
-            app:boxCornerRadiusBottomEnd="2dp"
-            app:hintTextColor="@color/textMuted">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etFullName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName|textCapWords"
-                android:textColor="@color/white"/>
-        </com.google.android.material.textfield.TextInputLayout>
+            android:text="Full name"
+            android:textColor="#8B8A8E"
+            android:textSize="11.5sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="7dp" />
 
-        <!-- Email -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilEmail"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <EditText
+            android:id="@+id/etRegisterName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:hint="@string/hint_email"
-            app:boxStrokeColor="@color/white"
-            app:boxCornerRadiusTopStart="2dp"
-            app:boxCornerRadiusTopEnd="2dp"
-            app:boxCornerRadiusBottomStart="2dp"
-            app:boxCornerRadiusBottomEnd="2dp"
-            app:hintTextColor="@color/textMuted">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/white"/>
-        </com.google.android.material.textfield.TextInputLayout>
+            android:background="@drawable/bg_input_field"
+            android:hint="Enter your name"
+            android:textColorHint="#5C5B60"
+            android:textColor="#F4F0E6"
+            android:padding="14dp"
+            android:textSize="14sp"
+            android:layout_marginBottom="14dp" />
 
-        <!-- Password -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilPassword"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <!-- Input: Email -->
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:hint="@string/hint_password"
-            app:passwordToggleEnabled="true"
-            app:boxStrokeColor="@color/white"
-            app:boxCornerRadiusTopStart="2dp"
-            app:boxCornerRadiusTopEnd="2dp"
-            app:boxCornerRadiusBottomStart="2dp"
-            app:boxCornerRadiusBottomEnd="2dp"
-            app:hintTextColor="@color/textMuted">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:textColor="@color/white"/>
-        </com.google.android.material.textfield.TextInputLayout>
+            android:text="Email"
+            android:textColor="#8B8A8E"
+            android:textSize="11.5sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="7dp" />
 
-        <com.google.android.material.button.MaterialButton
+        <EditText
+            android:id="@+id/etRegisterEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_input_field"
+            android:hint="you@email.com"
+            android:textColorHint="#5C5B60"
+            android:textColor="#F4F0E6"
+            android:inputType="textEmailAddress"
+            android:padding="14dp"
+            android:textSize="14sp"
+            android:layout_marginBottom="14dp" />
+
+        <!-- Input: Password -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Password"
+            android:textColor="#8B8A8E"
+            android:textSize="11.5sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="7dp" />
+
+        <EditText
+            android:id="@+id/etRegisterPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_input_field"
+            android:hint="Create a password"
+            android:textColorHint="#5C5B60"
+            android:textColor="#F4F0E6"
+            android:inputType="textPassword"
+            android:padding="14dp"
+            android:textSize="14sp"
+            android:layout_marginBottom="6dp" />
+
+        <!-- Primary Action Button -->
+        <Button
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_register"
-            android:backgroundTint="@color/white"
-            android:textColor="@color/black"
+            android:backgroundTint="#F4F0E6"
+            android:textColor="#0A0A0B"
+            android:text="Create account"
+            android:textAllCaps="false"
             android:textStyle="bold"
-            android:letterSpacing="0.1"
-            android:paddingTop="14dp"
-            android:paddingBottom="14dp"
-            app:cornerRadius="2dp"/>
+            android:textSize="14sp"
+            app:cornerRadius="100dp"
+            android:paddingVertical="14dp"
+            android:layout_marginTop="6dp" />
 
-        <TextView
-            android:id="@+id/tvLogin"
+        <!-- Footnote Link -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/have_account"
-            android:textColor="@color/textMuted"
-            android:textSize="14sp"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="18dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already have an account? "
+                android:textColor="#8B8A8E"
+                android:textSize="12.5sp" />
+
+            <TextView
+                android:id="@+id/tvGoToLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Log in"
+                android:textColor="#E2B13C"
+                android:textSize="12.5sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
     </LinearLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
