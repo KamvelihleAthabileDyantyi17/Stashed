@@ -2,6 +2,7 @@ package com.example.stashed.ui.budget
 
 import androidx.lifecycle.*
 import com.example.stashed.data.entities.Category
+import com.example.stashed.data.entities.Expense // Make sure to import this!
 import com.example.stashed.data.repository.StashedRepository
 import kotlinx.coroutines.launch
 
@@ -12,6 +13,10 @@ class BudgetViewModel(
 
     val categories: LiveData<List<Category>> =
         repository.getCategoriesForUser(userId).asLiveData()
+
+    // --- ADDED THIS LINE FOR THE BAR CHART ---
+    val currentMonthExpenses: LiveData<List<Expense>> =
+        repository.getExpensesForCurrentMonth(userId).asLiveData()
 
     private val _saveResult = MutableLiveData<Boolean?>()
     val saveResult: LiveData<Boolean?> = _saveResult
