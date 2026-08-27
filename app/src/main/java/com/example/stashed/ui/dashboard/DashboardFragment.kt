@@ -20,7 +20,7 @@ class DashboardFragment : Fragment() {
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var budgetAdapter: CategoryBudgetAdapter
+    // We only need the recent adapter now since the XML uses Quick Action Chips instead of a budget list
     private lateinit var recentAdapter: RecentExpenseAdapter
 
     private val viewModel: DashboardViewModel by viewModels {
@@ -37,36 +37,33 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.tvMonthLabel.text = viewModel.currentMonthLabel
-
-        budgetAdapter = CategoryBudgetAdapter()
-        binding.rvBudgets.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvBudgets.adapter = budgetAdapter
-
+        // Setup the Recent Transactions RecyclerView
         recentAdapter = RecentExpenseAdapter(emptyMap())
-        binding.rvRecentExpenses.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvRecentExpenses.adapter = recentAdapter
+        binding.rvRecentTransactions.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvRecentTransactions.adapter = recentAdapter
+        binding.rvRecentTransactions.isNestedScrollingEnabled = false
 
-        binding.fab.setOnClickListener {
+        // Hook up the FAB to navigate to your Expense flow
+        binding.fabAdd.setOnClickListener {
+            // Note: If you want to use the BottomSheet we made earlier,
+            // you can replace this with: AddExpenseBottomSheet().show(childFragmentManager, "AddExpense")
             findNavController().navigate(R.id.action_dashboard_to_addExpense)
         }
 
+        // Observe Total Spend and map it to your tvMainBalance
         viewModel.totalSpend.observe(viewLifecycleOwner) { total ->
-            binding.tvTotalSpend.text = CurrencyUtils.format(total ?: 0.0)
+            binding.tvMainBalance.text = CurrencyUtils.format(total ?: 0.0)
         }
 
-        viewModel.categoryItems.observe(viewLifecycleOwner) { items ->
-            budgetAdapter.submitList(items)
-            binding.tvEmptyBudgets.visibility = if (items.isEmpty()) View.VISIBLE else View.GONE
-        }
-
+        // Observe Recent Expenses
         viewModel.recentExpenses.observe(viewLifecycleOwner) { expenses ->
+            // We use categoryItems just to map the Category ID to the Category Name for the adapter
             val catMap = viewModel.categoryItems.value
                 ?.associate { it.category.categoryId to it.category.name } ?: emptyMap()
+
             recentAdapter = RecentExpenseAdapter(catMap)
-            binding.rvRecentExpenses.adapter = recentAdapter
+            binding.rvRecentTransactions.adapter = recentAdapter
             recentAdapter.submitList(expenses)
-            binding.tvEmptyRecent.visibility = if (expenses.isEmpty()) View.VISIBLE else View.GONE
         }
     }
 

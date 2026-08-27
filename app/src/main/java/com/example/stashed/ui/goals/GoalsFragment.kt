@@ -43,7 +43,16 @@ class GoalsFragment : Fragment() {
         val adapter = GoalAdapter(
             onContribute = { goal -> showContributeDialog(goal) },
             onDelete = { goal -> viewModel.deleteGoal(goal) }
+
         )
+// Inside onViewCreated in GoalsFragment.kt:
+        val openAddGoalSheet = View.OnClickListener {
+            AddGoalBottomSheet().show(childFragmentManager, "AddGoalSheet")
+        }
+
+        binding.fabAddGoal.setOnClickListener(openAddGoalSheet)
+        binding.btnTopAddGoal.setOnClickListener(openAddGoalSheet)
+
         binding.rvGoals.layoutManager = LinearLayoutManager(requireContext())
         binding.rvGoals.adapter = adapter
 
@@ -52,7 +61,7 @@ class GoalsFragment : Fragment() {
             binding.tvEmpty.visibility = if (goals.isEmpty()) View.VISIBLE else View.GONE
         }
 
-        binding.fab.setOnClickListener {
+        binding.fabAddGoal.setOnClickListener {
             findNavController().navigate(R.id.action_goals_to_addGoal)
         }
 

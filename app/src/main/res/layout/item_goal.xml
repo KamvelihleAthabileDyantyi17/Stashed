@@ -23,7 +23,6 @@
             android:layout_height="52dp"
             android:layout_marginEnd="14dp">
 
-            <!-- The progress color will be set dynamically in your Kotlin Adapter -->
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/progressGoal"
                 android:layout_width="match_parent"
@@ -66,10 +65,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="R3,200 of R10,000 · by Dec 2026"
+                android:text="R3,200 of R10,000 · by Dec"
                 android:textColor="#8B8A8E"
                 android:textSize="11.5sp" />
         </LinearLayout>
 
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnContribute"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_plus"
+                app:tint="#5FD98A" />
+
+            <ImageButton
+                android:id="@+id/btnDelete"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_delete"
+                app:tint="#E26D5C" />
+        </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

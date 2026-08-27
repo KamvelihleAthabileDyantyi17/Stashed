@@ -43,7 +43,6 @@ class GoalsViewModel(
         if (amount <= 0) { _error.value = "Contribution must be greater than zero"; return }
         viewModelScope.launch {
             repository.addToGoal(goal.goalId, amount)
-            val updated = repository.getCategoriesSync(userId) // trigger refresh
             val newSaved = goal.savedAmount + amount
             if (newSaved >= goal.targetAmount) {
                 repository.markGoalComplete(goal.goalId)

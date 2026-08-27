@@ -26,22 +26,27 @@ class GoalAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(goal: Goal) {
-            binding.tvGoalName.text = goal.goalName
-            binding.tvSaved.text = CurrencyUtils.format(goal.savedAmount)
-            binding.tvTarget.text = "/ ${CurrencyUtils.format(goal.targetAmount)}"
-            binding.tvDeadline.text = "By ${DateUtils.formatDate(goal.deadline)}"
+            binding.tvGoalTitle.text = goal.goalName
+
+            // Format the nice combined string for the UI!
+            val saved = CurrencyUtils.format(goal.savedAmount)
+            val target = CurrencyUtils.format(goal.targetAmount)
+            val date = DateUtils.formatDate(goal.deadline)
+            binding.tvGoalDetails.text = "$saved of $target · by $date"
 
             val progress = if (goal.targetAmount > 0)
                 ((goal.savedAmount / goal.targetAmount) * 100).coerceIn(0.0, 100.0).toInt()
             else 0
+
             binding.progressGoal.progress = progress
-            binding.tvGoalPercent.text = "${progress}%"
+            binding.tvGoalProgressPercentage.text = "${progress}%"
 
             if (goal.isComplete) {
-                binding.tvStatus.text = "COMPLETE"
+                binding.tvGoalDetails.text = "COMPLETED"
+                binding.tvGoalDetails.setTextColor(android.graphics.Color.parseColor("#5FD98A"))
                 binding.btnContribute.isEnabled = false
             } else {
-                binding.tvStatus.text = "IN PROGRESS"
+                binding.tvGoalDetails.setTextColor(android.graphics.Color.parseColor("#8B8A8E"))
                 binding.btnContribute.isEnabled = true
             }
 

@@ -2,10 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#050506"
-    android:padding="22dp">
+    android:padding="22dp"
+    tools:ignore="HardcodedText">
 
     <!-- Top Bar -->
     <LinearLayout
@@ -31,8 +33,23 @@
             android:layout_height="34dp"
             android:background="@drawable/bg_surface_rounded"
             android:src="@drawable/ic_plus"
+            android:contentDescription="Add new goal"
             app:tint="#F4F0E6" />
     </LinearLayout>
+
+    <!-- Empty State Message -->
+    <TextView
+        android:id="@+id/tvEmpty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No goals yet. Tap + to start saving!"
+        android:textColor="#8B8A8E"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/topBarGoals"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Goals List -->
     <androidx.recyclerview.widget.RecyclerView
@@ -54,6 +71,7 @@
         android:layout_marginBottom="20dp"
         android:backgroundTint="#E2B13C"
         android:src="@drawable/ic_plus"
+        android:contentDescription="Add new goal"
         app:tint="#151004"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
