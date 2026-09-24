@@ -17,7 +17,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/btnCloseCategory"
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:background="@drawable/bg_surface_rounded"
@@ -140,7 +139,6 @@
                 android:layout_marginBottom="7dp" />
 
             <EditText
-                android:id="@+id/etMonthlyLimit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_input_field"
@@ -170,7 +168,6 @@
 
                 <!-- Active Color (Gold) -->
                 <View
-                    android:id="@+id/colorGold"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:layout_marginEnd="10dp"
@@ -178,7 +175,6 @@
 
                 <!-- Inactive Color (Red) -->
                 <View
-                    android:id="@+id/colorRed"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:layout_marginEnd="10dp"
@@ -186,7 +182,6 @@
 
                 <!-- Inactive Color (Blue) -->
                 <View
-                    android:id="@+id/colorBlue"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:layout_marginEnd="10dp"
@@ -194,7 +189,6 @@
 
                 <!-- Inactive Color (Green) -->
                 <View
-                    android:id="@+id/colorGreen"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:background="@drawable/bg_color_green" />
@@ -213,7 +207,6 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
-            android:id="@+id/btnSaveCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#F4F0E6"
@@ -226,7 +219,6 @@
             android:paddingVertical="14dp" />
 
         <Button
-            android:id="@+id/btnCancelCategory"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

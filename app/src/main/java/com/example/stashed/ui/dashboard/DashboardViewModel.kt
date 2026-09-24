@@ -1,62 +1,45 @@
 package com.example.stashed.ui.dashboard
 
-import androidx.lifecycle.*
-import com.example.stashed.data.entities.Category
-import com.example.stashed.data.entities.Expense
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.stashed.data.repository.StashedRepository
 import com.example.stashed.utils.DateUtils
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
-data class CategoryBudgetItem(
-    val category: Category,
-    val spent: Double,
-    val percentage: Double,
-    val status: BudgetStatus
-)
-
-enum class BudgetStatus { GOOD, WARNING, DANGER }
 
 class DashboardViewModel(
     private val repository: StashedRepository,
-    private val userId: Int
+    private val currentUserId: Int // Pass the logged-in user's ID here
 ) : ViewModel() {
 
-    val recentExpenses: LiveData<List<Expense>> =
-        repository.getRecentExpenses(userId, 5).asLiveData()
+    // UI State for Total Spend
+    private val _totalSpend = MutableStateFlow(0.0)
+    val totalSpend: StateFlow<Double> = _totalSpend.asStateFlow()
 
-    val currentMonthExpenses: LiveData<List<Expense>> =
-        repository.getExpensesForCurrentMonth(userId).asLiveData()
-
-    private val _totalSpend = MutableLiveData<Double>(0.0)
-    val totalSpend: LiveData<Double> = _totalSpend
-
-    private val _categoryItems = MutableLiveData<List<CategoryBudgetItem>>()
-    val categoryItems: LiveData<List<CategoryBudgetItem>> = _categoryItems
-
-    val currentMonthLabel: String = DateUtils.formatMonthYear(System.currentTimeMillis())
+    // UI State for the Month Label
+    private val _currentMonthLabel = MutableStateFlow(
+        DateUtils.formatMonthYear(System.currentTimeMillis())
+    )
+    val currentMonthLabel: StateFlow<String> = _currentMonthLabel.asStateFlow()
 
     init {
-        loadDashboard()
+        loadDashboardData()
     }
 
-    fun loadDashboard() {
+    private fun loadDashboardData() {
         viewModelScope.launch {
-            val total = repository.getTotalSpendForMonth(userId)
-            _totalSpend.value = total
+            // Fetch total spend for the current month from Room
+            val spend = repository.getTotalSpendForMonth(currentUserId)
+            _totalSpend.value = spend
+        }
+    }
 
-            val categories = repository.getCategoriesSync(userId)
-            val items = categories.map { cat ->
-                val spent = repository.getTotalForCategoryThisMonth(userId, cat.categoryId)
-                val pct = if (cat.budgetLimit > 0) (spent / cat.budgetLimit) * 100.0 else 0.0
-                val status = when {
-                    pct >= 100.0 -> BudgetStatus.DANGER
-                    pct >= 70.0  -> BudgetStatus.WARNING
-                    else         -> BudgetStatus.GOOD
-                }
-                CategoryBudgetItem(cat, spent, pct, status)
-            }
-            _categoryItems.value = items
+    // Triggered by your gold "Sync to Cloud" button
+    fun triggerCloudSync() {
+        viewModelScope.launch {
+            repository.syncAllUserDataToCloud(currentUserId)
         }
     }
 }

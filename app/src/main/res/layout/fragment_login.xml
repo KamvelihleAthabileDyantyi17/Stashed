@@ -4,133 +4,113 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#050506"
-    android:padding="26dp">
+    android:background="#FFFFFF"
+    android:padding="32dp">
 
+    <!-- Top Logo Box -->
+    <View
+        android:id="@+id/logoBox"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/bg_button_black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvAppTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="serif"
+        android:text="Stashed"
+        android:textColor="#000000"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logoBox" />
+
+    <TextView
+        android:id="@+id/tvSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your money, your rules"
+        android:textColor="#757575"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvAppTitle" />
+
+    <!-- Login Form -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <!-- Logo Mark -->
-        <FrameLayout
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:background="@drawable/bg_logo_mark"
-            android:layout_marginBottom="16dp">
-
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_piggy_bank"
-                app:tint="#0A0A0B" />
-        </FrameLayout>
+        app:layout_constraintTop_toBottomOf="@id/tvSubtitle">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Stashed"
-            android:textColor="#F4F0E6"
-            android:textSize="19sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Your money, your rules"
-            android:textColor="#E2B13C"
-            android:textSize="11.5sp"
-            android:textStyle="bold"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="26dp" />
-
-        <!-- Input: Username -->
-        <TextView
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Username"
-            android:textColor="#8B8A8E"
-            android:textSize="11.5sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="7dp" />
+            android:textColor="#757575"
+            android:textSize="12sp"
+            android:layout_marginBottom="8dp"/>
 
         <EditText
-            android:id="@+id/etLoginUsername"
+            android:id="@+id/etUsername"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_input_field"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_input_light"
             android:hint="Enter your username"
-            android:textColorHint="#5C5B60"
-            android:textColor="#F4F0E6"
-            android:padding="14dp"
-            android:textSize="14sp"
-            android:layout_marginBottom="14dp" />
+            android:textColorHint="#BDBDBD"
+            android:paddingHorizontal="16dp"
+            android:textColor="#000000"
+            android:textSize="14sp" />
 
-        <!-- Input: Password -->
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Password"
-            android:textColor="#8B8A8E"
-            android:textSize="11.5sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="7dp" />
-
-        <EditText
-            android:id="@+id/etLoginPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_input_field"
-            android:hint="Enter your password"
-            android:textColorHint="#5C5B60"
-            android:textColor="#F4F0E6"
-            android:inputType="textPassword"
-            android:padding="14dp"
-            android:textSize="14sp"
-            android:layout_marginBottom="6dp" />
-
-        <!-- Primary Action Button -->
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#F4F0E6"
-            android:textColor="#0A0A0B"
-            android:text="Log in"
-            android:textAllCaps="false"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            app:cornerRadius="100dp"
-            android:paddingVertical="14dp"
-            android:layout_marginTop="6dp" />
-
-        <!-- Footnote Link -->
-        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="18dp">
+            android:text="Password"
+            android:textColor="#757575"
+            android:textSize="12sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Don't have an account? "
-                android:textColor="#8B8A8E"
-                android:textSize="12.5sp" />
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_input_light"
+            android:hint="Enter your password"
+            android:textColorHint="#BDBDBD"
+            android:inputType="textPassword"
+            android:paddingHorizontal="16dp"
+            android:textColor="#000000"
+            android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/tvGoToRegister"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sign up"
-                android:textColor="#E2B13C"
-                android:textSize="12.5sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/bg_button_black"
+            android:text="Log in"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="Don't have an account? Sign up"
+        android:textColor="#757575"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,7 +25,6 @@
 
             <!-- Icon Circle (You'll map the colors programmatically in your Adapter) -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/cvCategoryIconBg"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 app:cardCornerRadius="10dp"
@@ -33,7 +32,6 @@
                 app:cardElevation="0dp">
 
                 <TextView
-                    android:id="@+id/tvCategoryIcon"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -42,7 +40,6 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/tvCategoryTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -59,7 +56,6 @@
                 android:gravity="baseline">
 
                 <TextView
-                    android:id="@+id/tvCategorySpent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="R850 "
@@ -68,7 +64,6 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvCategoryLimit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="/ R1,200"
@@ -79,7 +74,6 @@
 
         <!-- Progress Bar -->
         <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/progressCategory"
             android:layout_width="match_parent"
             android:layout_height="7dp"
             android:progress="71"

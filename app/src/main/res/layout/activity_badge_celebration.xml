@@ -19,7 +19,6 @@
         android:padding="32dp">
 
         <TextView
-            android:id="@+id/tvBadgeEmoji"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="🏆"
@@ -27,7 +26,6 @@
             android:layout_marginBottom="16dp"/>
 
         <TextView
-            android:id="@+id/tvBadgeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Budget Champion!"
@@ -38,7 +36,6 @@
             android:layout_marginBottom="8dp"/>
 
         <TextView
-            android:id="@+id/tvBadgeMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="You completed your budget goal this month!"

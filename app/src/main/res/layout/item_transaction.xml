@@ -10,7 +10,6 @@
 
     <!-- Icon Circle -->
     <androidx.cardview.widget.CardView
-        android:id="@+id/cvIconBackground"
         android:layout_width="38dp"
         android:layout_height="38dp"
         app:cardCornerRadius="12dp"
@@ -18,7 +17,6 @@
         app:cardElevation="0dp">
 
         <TextView
-            android:id="@+id/tvIcon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -35,7 +33,6 @@
         android:layout_marginStart="12dp">
 
         <TextView
-            android:id="@+id/tvTransactionTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Woolworths"
@@ -44,7 +41,6 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvTransactionSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"

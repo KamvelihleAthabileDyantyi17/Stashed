@@ -17,7 +17,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/btnCloseGoal"
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:background="@drawable/bg_surface_rounded"
@@ -109,7 +108,6 @@
                 android:layout_marginBottom="7dp" />
 
             <EditText
-                android:id="@+id/etAlreadySaved"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_input_field"
@@ -132,7 +130,6 @@
                 android:layout_marginBottom="7dp" />
 
             <EditText
-                android:id="@+id/etTargetDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_input_field"
@@ -257,7 +254,6 @@
             android:paddingVertical="14dp" />
 
         <Button
-            android:id="@+id/btnCancelGoal"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

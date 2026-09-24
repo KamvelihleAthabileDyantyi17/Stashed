@@ -1,105 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:background="#1E1E1E">
+    android:layout_height="match_parent"
+    android:background="#050506">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set Monthly Budget"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="6dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Applies to the current month"
-        android:textSize="13sp"
-        android:textColor="#888888"
-        android:layout_marginBottom="24dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TOTAL BUDGET (R)"
-        android:textSize="11sp"
-        android:textColor="#888888"
-        android:layout_marginBottom="6dp"/>
-
-    <EditText
-        android:id="@+id/etMonthlyBudget"
+    <!-- Top Bar -->
+    <LinearLayout
+        android:id="@+id/topBarSetBudget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:hint="e.g. 5000"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:padding="12dp"
-        android:background="@drawable/input_background"
-        android:layout_marginBottom="16dp"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="22dp"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
+        <ImageButton
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="@drawable/bg_surface_rounded"
+            android:src="@drawable/ic_close"
+            app:tint="#F4F0E6" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Set monthly budget"
+            android:textColor="#F4F0E6"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <!-- Spacer for center alignment -->
+        <View
+            android:layout_width="34dp"
+            android:layout_height="34dp" />
+    </LinearLayout>
+
+    <!-- Scrollable Form Area -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingHorizontal="22dp"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/topBarSetBudget"
+        app:layout_constraintBottom_toTopOf="@id/bottomButtonsBudget">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Applies to the current month"
+                android:textColor="#8B8A8E"
+                android:textSize="13sp"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Total Budget -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total budget (R)"
+                android:textColor="#8B8A8E"
+                android:textSize="11.5sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="7dp" />
+
+            <EditText
+                android:id="@+id/etMonthlyBudget"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_field"
+                android:hint="e.g. 5000"
+                android:textColorHint="#5C5B60"
+                android:textColor="#F4F0E6"
+                android:padding="14dp"
+                android:textSize="14sp"
+                android:inputType="numberDecimal"
+                android:layout_marginBottom="18dp" />
+
+            <!-- Minimum Spending Goal -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Minimum spending goal (R)"
+                android:textColor="#8B8A8E"
+                android:textSize="11.5sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="7dp" />
+
+            <EditText
+                android:id="@+id/etMinimumGoal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_field"
+                android:hint="e.g. 500"
+                android:textColorHint="#5C5B60"
+                android:textColor="#F4F0E6"
+                android:padding="14dp"
+                android:textSize="14sp"
+                android:inputType="numberDecimal"
+                android:layout_marginBottom="18dp" />
+
+            <!-- Monthly Income -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Monthly income (R) — Optional"
+                android:textColor="#8B8A8E"
+                android:textSize="11.5sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="7dp" />
+
+            <EditText
+                android:id="@+id/etMonthlyIncome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_field"
+                android:hint="e.g. 15000"
+                android:textColorHint="#5C5B60"
+                android:textColor="#F4F0E6"
+                android:padding="14dp"
+                android:textSize="14sp"
+                android:inputType="numberDecimal"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Error Message -->
+            <TextView
+                android:id="@+id/tvBudgetError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Error message"
+                android:textColor="#FF6B5E"
+                android:textSize="13sp"
+                android:visibility="gone"
+                android:layout_marginBottom="12dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Buttons Layout -->
+    <LinearLayout
+        android:id="@+id/bottomButtonsBudget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="MINIMUM SPENDING GOAL (R)"
-        android:textColor="#888888"
-        android:textSize="11sp"
-        android:layout_marginBottom="6dp"
-        android:layout_marginTop="16dp"/>
+        android:orientation="vertical"
+        android:padding="22dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <EditText
-        android:id="@+id/etMinimumGoal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="e.g. 500"
-        android:textColorHint="#555555"
-        android:textColor="#FFFFFF"
-        android:background="@drawable/input_background"
-        android:inputType="numberDecimal"
-        android:layout_marginBottom="20dp"/>
+        <Button
+            android:id="@+id/btnSaveBudget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#F4F0E6"
+            android:textColor="#0A0A0B"
+            android:text="Save budget"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            app:cornerRadius="100dp"
+            android:paddingVertical="14dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="MONTHLY INCOME (R) — optional"
-        android:textSize="11sp"
-        android:textColor="#888888"
-        android:layout_marginBottom="6dp"/>
+        <Button
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            android:textColor="#F4F0E6"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="100dp"
+            app:strokeColor="#232326"
+            android:paddingVertical="14dp" />
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/etMonthlyIncome"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:hint="e.g. 15000"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:padding="12dp"
-        android:background="@drawable/input_background"
-        android:layout_marginBottom="8dp"/>
-
-    <TextView
-        android:id="@+id/tvBudgetError"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#FF3B30"
-        android:textSize="13sp"
-        android:visibility="gone"
-        android:layout_marginBottom="12dp"/>
-
-    <Button
-        android:id="@+id/btnSaveBudget"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:text="Save Budget"
-        android:textSize="16sp"
-        android:backgroundTint="#FF3B30"
-        android:textColor="#FFFFFF"/>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

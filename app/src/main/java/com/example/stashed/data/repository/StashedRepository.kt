@@ -1,8 +1,8 @@
 package com.example.stashed.data.repository
 
+import android.util.Log
 import com.example.stashed.data.dao.CategoryDao
 import com.example.stashed.data.dao.ExpenseDao
-
 import com.example.stashed.data.dao.GoalDao
 import com.example.stashed.data.dao.UserDao
 import com.example.stashed.data.entities.Category
@@ -10,6 +10,7 @@ import com.example.stashed.data.entities.Expense
 import com.example.stashed.data.entities.Goal
 import com.example.stashed.data.entities.User
 import com.example.stashed.utils.DateUtils
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 
 class StashedRepository(
@@ -18,24 +19,23 @@ class StashedRepository(
     private val categoryDao: CategoryDao,
     private val goalDao: GoalDao
 ) {
+    // ── Firebase Cloud Firestore ───────────────────────────────────────────
+    private val firestoreDb = FirebaseFirestore.getInstance()
+
     // ── Users ──────────────────────────────────────────────────────────────
-    // ── Users ──────────────────────────────────────────────────────────────
-    // Changed to match your DAO's 'registerUser' method
     suspend fun registerUser(user: User): Long = userDao.registerUser(user)
-
-    // Changed to search by username, matching your DAO
     suspend fun getUserByUsername(username: String): User? = userDao.getUserByUsername(username)
-
-    // New method matching your DAO for login
     suspend fun loginUser(username: String, password: String): User? = userDao.loginUser(username, password)
-
-    // Kept the same, this matches your DAO perfectly
     suspend fun getUserById(id: Int): User? = userDao.getUserById(id)
 
-    // Note: If you have an 'updateUser' function in your app, make sure your UserDao has an @Update method for it!
-
     // ── Expenses ───────────────────────────────────────────────────────────
-    suspend fun insertExpense(expense: Expense): Long = expenseDao.insertExpense(expense)
+    suspend fun insertExpense(expense: Expense): Long {
+        val id = expenseDao.insertExpense(expense)
+        // Optionally auto-sync when a new expense is added locally
+        syncExpenseToCloud(expense.copy(id = id.toInt()))
+        return id
+    }
+
     suspend fun updateExpense(expense: Expense) = expenseDao.updateExpense(expense)
     suspend fun deleteExpense(expense: Expense) = expenseDao.deleteExpense(expense)
     fun getExpensesForUser(userId: Int): Flow<List<Expense>> = expenseDao.getExpensesForUser(userId)
@@ -57,7 +57,6 @@ class StashedRepository(
     }
 
     suspend fun pruneOldExpenses(userId: Int) {
-        // Example: Delete expenses older than 3 months
         val threeMonthsAgo = System.currentTimeMillis() - (90L * 24 * 60 * 60 * 1000)
         expenseDao.deleteExpensesBefore(userId, threeMonthsAgo)
     }
@@ -91,4 +90,44 @@ class StashedRepository(
     fun getGoalsForUser(userId: Int): Flow<List<Goal>> = goalDao.getGoalsForUser(userId)
     suspend fun addToGoal(goalId: Int, amount: Double) = goalDao.addToGoal(goalId, amount)
     suspend fun markGoalComplete(goalId: Int) = goalDao.markGoalComplete(goalId)
+
+    // ── Cloud Sync Execution ───────────────────────────────────────────────
+
+    // Pushes a single expense to the cloud (isolated inside the user's document)
+    private fun syncExpenseToCloud(expense: Expense) {
+        val userId = expense.userId.toString()
+        val expenseId = expense.id.toString()
+
+        firestoreDb.collection("users").document(userId)
+            .collection("expenses").document(expenseId)
+            .set(expense)
+            .addOnSuccessListener {
+                Log.d("StashedSync", "Expense $expenseId successfully synced to cloud!")
+            }
+            .addOnFailureListener { e ->
+                Log.e("StashedSync", "Failed to sync expense $expenseId", e)
+            }
+    }
+
+    // Master function for the "Sync to Cloud" button in your XML UI
+    suspend fun syncAllUserDataToCloud(userId: Int) {
+        val userStrId = userId.toString()
+
+        // 1. Sync User Profile
+        val user = getUserById(userId)
+        if (user != null) {
+            firestoreDb.collection("users").document(userStrId).set(user)
+        }
+
+        // 2. Sync Categories
+        val categories = getCategoriesSync(userId)
+        categories.forEach { category ->
+            firestoreDb.collection("users").document(userStrId)
+                .collection("categories").document(category.id.toString())
+                .set(category)
+        }
+
+        // Note: You can add lists of Expenses and Goals here later using the same pattern!
+        Log.d("StashedSync", "Master cloud sync completed for user $userId")
+    }
 }

@@ -4,32 +4,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.stashed.R
-import com.example.stashed.StashedApplication
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.example.stashed.data.AppDatabase
+
+import com.example.stashed.data.repository.StashedRepository
 import com.example.stashed.databinding.FragmentDashboardBinding
-import com.example.stashed.ui.ViewModelFactory
 import com.example.stashed.utils.CurrencyUtils
-import com.example.stashed.utils.SessionManager
+import kotlinx.coroutines.launch
 
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
 
-    // We only need the recent adapter now since the XML uses Quick Action Chips instead of a budget list
-    private lateinit var recentAdapter: RecentExpenseAdapter
+    private lateinit var viewModel: DashboardViewModel
 
-    private val viewModel: DashboardViewModel by viewModels {
-        val app = requireActivity().application as StashedApplication
-        val userId = SessionManager(requireContext()).getUserId()
-        ViewModelFactory(app.repository, userId)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -37,39 +33,38 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Setup the Recent Transactions RecyclerView
-        recentAdapter = RecentExpenseAdapter(emptyMap())
-        binding.rvRecentTransactions.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvRecentTransactions.adapter = recentAdapter
-        binding.rvRecentTransactions.isNestedScrollingEnabled = false
+// 1. Initialize Database, Repository, and ViewModel
+        val database = AppDatabase.getDatabase(requireContext())
+        val repository = StashedRepository(
+            database.userDao(),
+            database.expenseDao(),
+            database.categoryDao(),
+            database.goalDao()
+        )
 
-        // Hook up the FAB to navigate to your Expense flow
+        // Hardcoding userId = 1 just for testing the UI
+        val factory = DashboardViewModelFactory(repository, userId = 1)
+        viewModel = ViewModelProvider(this, factory)[DashboardViewModel::class.java]
+
+        // 2. Static Setup
+        binding.tvUserName.text = "Kamvelihle"
+
+        // 3. Click Listeners
         binding.fabAdd.setOnClickListener {
-            // Note: If you want to use the BottomSheet we made earlier,
-            // you can replace this with: AddExpenseBottomSheet().show(childFragmentManager, "AddExpense")
-            findNavController().navigate(R.id.action_dashboard_to_addExpense)
+            Toast.makeText(requireContext(), "Add Expense Clicked", Toast.LENGTH_SHORT).show()
         }
 
-        // Observe Total Spend and map it to your tvMainBalance
-        viewModel.totalSpend.observe(viewLifecycleOwner) { total ->
-            binding.tvMainBalance.text = CurrencyUtils.format(total ?: 0.0)
+        binding.btnProfileIcon.setOnClickListener {
+            Toast.makeText(requireContext(), "Syncing to Firebase...", Toast.LENGTH_SHORT).show()
+            viewModel.triggerCloudSync()
         }
 
-        // Observe Recent Expenses
-        viewModel.recentExpenses.observe(viewLifecycleOwner) { expenses ->
-            // We use categoryItems just to map the Category ID to the Category Name for the adapter
-            val catMap = viewModel.categoryItems.value
-                ?.associate { it.category.categoryId to it.category.name } ?: emptyMap()
-
-            recentAdapter = RecentExpenseAdapter(catMap)
-            binding.rvRecentTransactions.adapter = recentAdapter
-            recentAdapter.submitList(expenses)
+        // 4. Observe Database Changes and Update UI
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.totalSpend.collect { amount ->
+                binding.tvMainBalance.text = CurrencyUtils.format(amount)
+            }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.loadDashboard()
     }
 
     override fun onDestroyView() {
