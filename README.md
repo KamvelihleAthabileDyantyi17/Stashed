@@ -1,104 +1,81 @@
-# Stashed — Personal Budget Planner
+Stashed 💰
 
-A personal budget tracking Android app built in Kotlin using Room Database.
+Stashed is a modern, secure, and intuitive Android application designed to help users track their daily expenses, set monthly budget goals, and monitor their financial health in real-time.
 
-## App Features
-- User registration and secure login
-- Add and categorise expenses
-- Set monthly minimum and maximum budget goals
-- Dashboard showing spending progress with warnings
-- Spending graph with min/max goal lines
-- Gamification: earn badges for completing monthly budget goals
-- Budget Champion badge with confetti celebration
-- Visual progress tracking against budget goals
+🎥 Video Demonstration
 
-## Custom Features
+Watch the full app walkthrough and API demonstration here:
+👉 [Insert your YouTube Link Here] 👈
 
-### Feature 1: Badge Celebration System
-When the user taps "Complete Budget for the Month", a full-screen 
-celebration appears with animated confetti and a Budget Champion badge. 
-The badge is saved to the database so the user can view all earned 
-badges in the Badges screen. This was built to make budgeting feel 
-rewarding and motivating, similar to Samsung Health's step goal celebration.
+✨ Key Features
 
-### Feature 2: Spending Graph with Goal Lines
-A bar chart showing total spending for the current month, with 
-horizontal lines marking the minimum and maximum budget goals. 
-This gives the user an instant visual of whether they are within 
-their target spending range.
+Secure Authentication: User accounts are protected using BCrypt password hashing, ensuring that sensitive login credentials are safe.
 
-## Demo Video
-[Watch the full app demonstration here]https://youtu.be/VxECFd8pKQ8
+Expense Tracking: Easily log daily transactions with categories, descriptions, and custom UI cards.
 
-## GitHub Actions
-Automated build testing runs on every push via GitHub Actions.
+Budget Management: Set minimum and maximum monthly budget goals.
 
-## How to Run
-1. Clone this repository
-2. Open in Android Studio
-3. Build and run on a physical Android device
+Live Exchange Rates: Integrates a live REST API to view real-time currency exchange rates.
 
-## Technologies Used
-- Kotlin
-- Android Room Database
-- MPAndroidChart (graphs)
-- Konfetti (confetti animation)
-- WorkManager (background budget checks)
-- GitHub Actions (CI/CD)
+Cloud Syncing: Powered by Firebase, ensuring user data is reliably stored and accessible.
 
-## Team
-- Member 1 (Katleho): Database foundation, Login/Register, 
-  Badges, Gamification, Graph
-- Member 2: Expense capture, Categories
-- Member 3: Budget goals, Visual progress display
--
--IMAGES OF THE FINAL DIGITAL PRODUCT OF STACHED BUDGETING SYSTEM
+Automated Logging: Comprehensive background logging (Log.d, Log.e) implemented across repositories and view models for system monitoring and debugging.
 
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/31490aa5-4e5d-4d55-8b7e-10510f9390f7" />
+🎨 UI & Design System
 
+Stashed features a custom-built, standard XML Dark Mode interface inspired by modern retail and banking applications (e.g., Woolworths app styling).
 
+Main Backgrounds: Deep Dark #050506
 
+Surfaces & Cards: Elevated #111113
 
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/4efb9cd9-33fe-4b7d-b157-67a10faaf543" />
+Typography: High-contrast #F4F0E6 (Primary) and #8B8A8E (Secondary)
 
+Accents: Gold (#E2B13C) for primary actions and Red (#FF6B5E) for expense deductions.
 
+Components: Rounded CardView layouts (12dp-13dp corners) for transaction items.
 
+🛠 Technical Architecture
 
+Language: Kotlin
 
+UI Toolkit: Standard Android XML (reverted from Jetpack Compose for optimized performance and stability).
 
--
-- <img width="720" height="1600" alt="WhatsApp Image 2026-06-15 at 13 16 40" src="https://github.com/user-attachments/assets/36472e74-eda7-4dc1-a63d-fbfbd8878124" />
+Database: Firebase (Migrated to cloud infrastructure for robust data handling).
 
+Networking: Retrofit2 & Gson for REST API integration.
 
+Security: BCrypt for cryptographic password hashing.
 
+REST API Integration
 
+Stashed utilizes an external Exchange Rate REST API to provide users with up-to-date currency conversion metrics.
 
+Implementation: Handled via Retrofit with standard HTTP GET requests.
 
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/e0e63d20-81fd-4eac-8458-94c1088c35c5" />
+Error Handling: The UI gracefully handles network timeouts and invalid inputs without crashing, backed by detailed system logs.
 
+🚀 How to Run the App (Side-loading)
 
+Due to virtual machine constraints, the most efficient way to test Stashed is to run the compiled APK directly on a physical Android device.
 
+Download the app-debug.apk file from the /app/build/outputs/apk/debug/ directory.
 
+Transfer the APK to your physical Android device (via Google Drive, Email, or USB).
 
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/bf5e4b7f-2308-41b1-95f5-ea30f96137f2" />
+On your Android device, ensure "Install from Unknown Sources" is enabled in Settings > Security.
 
+Tap the APK file to install and launch Stashed.
 
+🤖 AI Usage Statement
 
-<img width="1080" height="2400" alt="image" src="https://github.com/user-attachments/assets/5bd802f9-d108-4123-95ac-f45670021b88" />
+As required by the project rubric, this section documents the use of AI tools during development.
 
+During the development of Stashed, Generative AI (Google Gemini) was utilized strictly as a collaborative coding assistant and tutor.
 
-<img width="1080" height="2400" alt="image" src="https://github.com/user-attachments/assets/8d4b09da-8e05-4201-a8cb-74dc8aac0c8a" />
+Debugging & Environment: AI was used to troubleshoot Virtual Machine storage limitations, Gradle cache corruptions (KSP), and ADB deployment issues.
 
+UI Translation: AI assisted in translating high-level design specifications (hex codes, Woolworths-style dark mode) into standard Android XML layout boilerplate.
 
-
-<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/9170475e-c013-49a6-a91f-0b5d19191384" />
-
-
-
-
-
-
-
-
-
-
+Architecture Decisions: AI provided structural advice for migrating from Jetpack Compose back to XML and implementing Retrofit for the REST API.
+All core logic, database management, and final code integration were manually reviewed, assembled, and tested by the developer.
