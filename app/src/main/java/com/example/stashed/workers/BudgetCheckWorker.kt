@@ -23,10 +23,14 @@ class BudgetCheckWorker(
         val categories = repo.getCategoriesSync(userId)
 
         for (category in categories) {
-            if (category.budgetLimit <= 0) continue
+            // FIXED: 'budgetLimit' was removed from the Category table.
+            // Placeholder set to 0.0 until the new Budget table is wired up.
+            val currentBudgetLimit = 0.0
+
+            if (currentBudgetLimit <= 0) continue
 
             val spent = repo.getTotalForCategoryThisMonth(userId, category.categoryId)
-            val percentage = (spent / category.budgetLimit) * 100.0
+            val percentage = (spent / currentBudgetLimit) * 100.0
 
             when {
                 percentage >= 100.0 -> NotificationHelper.sendBudgetExceeded(

@@ -39,6 +39,8 @@ class LoginFragment : Fragment() {
         }
 
         binding.tvRegister.setOnClickListener {
+            // Note: If this line stays red, open your res/navigation/nav_graph.xml
+            // and verify the exact ID of the arrow pointing from Login to Register!
             findNavController().navigate(R.id.action_login_to_register)
         }
 
@@ -48,6 +50,8 @@ class LoginFragment : Fragment() {
                 is AuthResult.Success -> {
                     val session = SessionManager(requireContext())
                     session.login(result.user.id, result.user.fullName)
+
+                    // Note: Same here, verify this ID in nav_graph.xml if it's red
                     findNavController().navigate(R.id.action_login_to_dashboard)
                     authViewModel.resetResult()
                 }

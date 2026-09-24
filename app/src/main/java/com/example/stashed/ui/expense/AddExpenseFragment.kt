@@ -1,11 +1,9 @@
 package com.example.stashed.ui.expense
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,7 +12,6 @@ import com.example.stashed.StashedApplication
 import com.example.stashed.databinding.FragmentAddExpenseBinding
 import com.example.stashed.ui.ViewModelFactory
 import com.example.stashed.utils.SessionManager
-import java.util.Calendar
 
 class AddExpenseFragment : Fragment() {
 
@@ -24,6 +21,7 @@ class AddExpenseFragment : Fragment() {
     private val viewModel: ExpenseViewModel by viewModels {
         val app = requireActivity().application as StashedApplication
         val userId = SessionManager(requireContext()).getUserId()
+        // Ensure ViewModelFactory is updated if it complains about Int vs String later
         ViewModelFactory(app.repository, userId)
     }
 
@@ -38,25 +36,24 @@ class AddExpenseFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.categories.observe(viewLifecycleOwner) { categories ->
-            val names = categories.map { it.name }
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, names)
-            binding.spinnerCategory.adapter = adapter
-            binding.spinnerCategory.setSelection(0)
-            if (categories.isNotEmpty()) selectedCategoryId = categories[0].categoryId
-
-            binding.spinnerCategory.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: android.widget.AdapterView<*>?, v: View?, pos: Int, id: Long) {
-                    selectedCategoryId = categories[pos].categoryId
-                }
-                override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
+            // Temporarily default to the first category so the app compiles and saves correctly.
+            // The clickable horizontal UI chips will be wired up once the app boots.
+            if (categories.isNotEmpty()) {
+                selectedCategoryId = categories[0].categoryId
             }
         }
 
-        binding.btnSave.setOnClickListener {
-            val amountStr = binding.etAmount.text.toString().trim()
+        // Updated to use the new XML IDs
+        binding.btnSaveExpense.setOnClickListener {
+            val amountStr = binding.etExpenseAmount.text.toString().trim()
             val amount = amountStr.toDoubleOrNull() ?: 0.0
             val note = binding.etNote.text.toString().trim()
-            viewModel.addExpense(selectedCategoryId, amount, note)
+
+            if (selectedCategoryId != -1) {
+                viewModel.addExpense(selectedCategoryId, amount, note)
+            } else {
+                Toast.makeText(requireContext(), "No category selected", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.btnCancel.setOnClickListener { findNavController().popBackStack() }

@@ -95,7 +95,8 @@ class BudgetsFragment : Fragment() {
         // If we are editing, pre-fill the fields with the current data
         if (category != null) {
             etName.setText(category.name)
-            etLimit.setText(category.budgetLimit.toString())
+            // budgetLimit was removed from Category, so we leave this blank for now
+            etLimit.setText("")
         }
 
         val title = if (category == null) "New Category" else "Edit Budget"
@@ -123,11 +124,13 @@ class BudgetsFragment : Fragment() {
             categoryAdapter.submitList(categoryList)
 
             if (categoryList.isNotEmpty()) {
+                // FIXED: budgetLimit was removed from the schema.
+                // Replaced with a static value (100f) so the chart still renders as a placeholder
                 val pieEntries = categoryList.map { cat ->
-                    PieEntry(cat.budgetLimit.toFloat(), cat.name)
+                    PieEntry(100f, cat.name)
                 }
 
-                val pieDataSet = PieDataSet(pieEntries, "Budget Limits").apply {
+                val pieDataSet = PieDataSet(pieEntries, "Categories").apply {
                     colors = listOf(
                         Color.parseColor("#E2B13C"),
                         Color.parseColor("#3C91E6"),
@@ -208,7 +211,6 @@ class BudgetsFragment : Fragment() {
         }
 
         // --- Base Configuration for Bar Chart ---
-        // (Dummy data removed! It is now handled dynamically by updateBarChart)
         binding.barChartTrends.apply {
             description.isEnabled = false
             setDrawGridBackground(false)

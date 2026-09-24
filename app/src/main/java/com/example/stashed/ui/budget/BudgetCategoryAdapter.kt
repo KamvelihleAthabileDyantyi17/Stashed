@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stashed.data.entities.Category
 import com.example.stashed.databinding.ItemCategoryBudgetBinding
-import com.example.stashed.utils.CurrencyUtils
 
 class BudgetCategoryAdapter(
     private val onEditLimit: (Category) -> Unit,
@@ -24,12 +23,19 @@ class BudgetCategoryAdapter(
     inner class ViewHolder(private val binding: ItemCategoryBudgetBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(cat: Category) {
+            // Hook up the new Emoji icon
+            binding.tvCategoryIcon.text = cat.icon
+
             binding.tvCategoryName.text = cat.name
+
+            // Reusing tvSpent to show if it's a default or custom category
             binding.tvSpent.text = if (cat.isDefault) "DEFAULT" else "CUSTOM"
-            binding.tvLimit.text = if (cat.budgetLimit > 0)
-                CurrencyUtils.format(cat.budgetLimit) else "No limit set"
+
+            // Since budget limits are now managed in a separate table, we clear this text
+            binding.tvLimit.text = ""
+
             binding.progressBar.progress = 0
-            binding.tvPercent.text = ""
+
             binding.root.setOnClickListener { onEditLimit(cat) }
             binding.root.setOnLongClickListener { onDelete(cat); true }
         }

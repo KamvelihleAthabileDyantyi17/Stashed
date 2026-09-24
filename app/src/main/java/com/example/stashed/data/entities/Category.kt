@@ -1,22 +1,15 @@
 package com.example.stashed.data.entities
 
-// Master function for the "Sync to Cloud" button in your XML UI
-suspend fun syncAllUserDataToCloud(userId: Int) {
-    val userStrId = userId.toString()
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-    // 1. Sync User Profile
-    val user = getUserById(userId)
-    if (user != null) {
-        firestoreDb.collection("users").document(userStrId).set(user)
-    }
-
-    // 2. Sync Categories
-    val categories = getCategoriesSync(userId)
-    categories.forEach { category ->
-        firestoreDb.collection("users").document(userStrId)
-            .collection("categories").document(category.categoryId.toString()) // <-- Fixed here
-            .set(category)
-    }
-
-    Log.d("StashedSync", "Master cloud sync completed for user $userId")
-}
+@Entity(tableName = "categories")
+data class Category(
+    @PrimaryKey(autoGenerate = true)
+    val categoryId: Int = 0,
+    val userId: String = "",
+    val name: String = "",
+    val icon: String = "🛒",
+    val colorHex: String = "#E2B13C",
+    val isDefault: Boolean = false
+)

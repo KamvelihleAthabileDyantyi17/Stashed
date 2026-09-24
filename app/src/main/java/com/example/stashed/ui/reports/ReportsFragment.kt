@@ -7,22 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.anychart.AnyChart
-import com.anychart.chart.common.dataentry.DataEntry
-import com.anychart.chart.common.dataentry.ValueDataEntry
-import com.anychart.enums.Align
-import com.anychart.enums.LegendLayout
 import com.example.stashed.StashedApplication
 import com.example.stashed.databinding.FragmentReportsBinding
 import com.example.stashed.ui.ViewModelFactory
 import com.example.stashed.utils.CurrencyUtils
 import com.example.stashed.utils.SessionManager
-
-// MPAndroidChart Imports
-import com.github.mikephil.charting.components.LimitLine
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 
 class ReportsFragment : Fragment() {
@@ -44,91 +38,81 @@ class ReportsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 1. Setup the static chart appearance (Limit lines, hiding axes)
         setupExpenseChart()
 
         viewModel.categorySpends.observe(viewLifecycleOwner) { spends ->
             if (spends.isEmpty()) {
                 binding.tvEmpty.visibility = View.VISIBLE
-                binding.anyChartPie.visibility = View.GONE
-                binding.expenseBarChart.visibility = View.GONE // Updated ID
+                binding.chartCard.visibility = View.GONE
                 return@observe
             }
 
             binding.tvEmpty.visibility = View.GONE
-            binding.anyChartPie.visibility = View.VISIBLE
-            binding.expenseBarChart.visibility = View.VISIBLE // Updated ID
-
-            // ── Pie Chart (AnyChart) ───────────────────────────────────────
-            val pie = AnyChart.pie()
-            val pieData: List<DataEntry> = spends.map {
-                ValueDataEntry(it.category.name, it.totalSpent)
-            }
-            pie.data(pieData)
-            pie.title("Spending by Category")
-            pie.labels().position("outside")
-            pie.legend()
-                .position("center-bottom")
-                .itemsLayout(LegendLayout.HORIZONTAL_EXPANDABLE)
-                .align(Align.CENTER)
-            binding.anyChartPie.setChart(pie)
+            binding.chartCard.visibility = View.VISIBLE
 
             // ── Bar Chart (MPAndroidChart) ─────────────────────────────────
-            // 1. Convert the data into BarEntry objects
             val entries = ArrayList<BarEntry>()
+            val labels = ArrayList<String>()
+
             var xIndex = 0f
 
             for (spend in spends) {
                 // BarEntry takes an X position (float) and a Y value (float amount)
                 entries.add(BarEntry(xIndex, spend.totalSpent.toFloat()))
+                labels.add(spend.category.name)
                 xIndex += 1f
             }
 
-            // 2. Put the entries into a Dataset
             val dataSet = BarDataSet(entries, "Amount (R)")
-            dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList() // Give it some nice default colors
 
-            // 3. Apply the dataset to the chart and refresh
+            // Dark Mode Chart Styling
+            dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
+            dataSet.valueTextColor = Color.parseColor("#F4F0E6")
+            dataSet.valueTextSize = 10f
+
             val barData = BarData(dataSet)
             binding.expenseBarChart.data = barData
-            binding.expenseBarChart.invalidate() // This redraws the chart with the new data
+
+            // Set X-Axis labels to category names
+            binding.expenseBarChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+
+            // Redraw the chart
+            binding.expenseBarChart.invalidate()
         }
 
         viewModel.currentMonthExpenses.observe(viewLifecycleOwner) { expenses ->
             val total = expenses.sumOf { it.amount }
             binding.tvTotalSpend.text = CurrencyUtils.format(total)
-            binding.tvTransactionCount.text = "${expenses.size} transactions"
+            binding.tvTransactionCount.text = "${expenses.size}"
         }
     }
 
     private fun setupExpenseChart() {
-        // Create the Max Goal Line
-        val maxBudgetLine = LimitLine(2000f, "Max Budget Limit").apply {
-            lineWidth = 2f
-            lineColor = Color.RED
-            enableDashedLine(10f, 10f, 0f)
-            labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
-            textSize = 10f
-            textColor = Color.DKGRAY
-        }
-
-        // Create the Min Goal Line
-        val minTargetLine = LimitLine(500f, "Minimum Target").apply {
-            lineWidth = 2f
-            lineColor = Color.GREEN
-            labelPosition = LimitLine.LimitLabelPosition.RIGHT_BOTTOM
-            textSize = 10f
-            textColor = Color.DKGRAY
-        }
-
-        // Apply them to the chart
         binding.expenseBarChart.apply {
-            axisLeft.addLimitLine(maxBudgetLine)
-            axisLeft.addLimitLine(minTargetLine)
-            axisLeft.axisMinimum = 0f
-            axisRight.isEnabled = false
             description.isEnabled = false
+            setDrawGridBackground(false)
+            setDrawBorders(false)
+
+            // Legend styling
+            legend.textColor = Color.parseColor("#8B8A8E")
+
+            // X-Axis styling
+            xAxis.position = XAxis.XAxisPosition.BOTTOM
+            xAxis.textColor = Color.parseColor("#8B8A8E")
+            xAxis.setDrawGridLines(false)
+            xAxis.granularity = 1f
+
+            // Y-Axis (Left) styling
+            axisLeft.textColor = Color.parseColor("#8B8A8E")
+            axisLeft.setDrawGridLines(true)
+            axisLeft.gridColor = Color.parseColor("#232326")
+            axisLeft.axisMinimum = 0f
+
+            // Hide Right Y-Axis
+            axisRight.isEnabled = false
+
             setFitBars(true)
+            animateY(1000) // Add a nice animation when it loads
         }
     }
 

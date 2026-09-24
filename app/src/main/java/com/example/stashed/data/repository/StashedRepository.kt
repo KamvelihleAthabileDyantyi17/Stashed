@@ -65,19 +65,22 @@ class StashedRepository(
     suspend fun insertCategory(category: Category): Long = categoryDao.insertCategory(category)
     suspend fun updateCategory(category: Category) = categoryDao.updateCategory(category)
     suspend fun deleteCategory(category: Category) = categoryDao.deleteCategory(category)
-    fun getCategoriesForUser(userId: Int): Flow<List<Category>> = categoryDao.getCategoriesForUser(userId)
-    suspend fun getCategoriesSync(userId: Int): List<Category> = categoryDao.getCategoriesForUserSync(userId)
+
+    // Converted to String to match Firebase UID requirements
+    fun getCategoriesForUser(userId: Int): Flow<List<Category>> = categoryDao.getCategoriesForUser(userId.toString())
+    suspend fun getCategoriesSync(userId: Int): List<Category> = categoryDao.getCategoriesForUserSync(userId.toString())
     suspend fun getCategoryById(id: Int): Category? = categoryDao.getCategoryById(id)
 
     suspend fun seedDefaultCategories(userId: Int) {
-        if (categoryDao.getCategoryCount(userId) == 0) {
+        if (categoryDao.getCategoryCount(userId.toString()) == 0) {
+            // Fixed variable names: iconName -> icon
             val defaults = listOf(
-                Category(userId = userId, name = "Food", iconName = "ic_food", isDefault = true),
-                Category(userId = userId, name = "Transport", iconName = "ic_transport", isDefault = true),
-                Category(userId = userId, name = "Housing", iconName = "ic_housing", isDefault = true),
-                Category(userId = userId, name = "Health", iconName = "ic_health", isDefault = true),
-                Category(userId = userId, name = "Entertainment", iconName = "ic_entertainment", isDefault = true),
-                Category(userId = userId, name = "Education", iconName = "ic_education", isDefault = true)
+                Category(userId = userId.toString(), name = "Food", icon = "ic_food", isDefault = true),
+                Category(userId = userId.toString(), name = "Transport", icon = "ic_transport", isDefault = true),
+                Category(userId = userId.toString(), name = "Housing", icon = "ic_housing", isDefault = true),
+                Category(userId = userId.toString(), name = "Health", icon = "ic_health", isDefault = true),
+                Category(userId = userId.toString(), name = "Entertainment", icon = "ic_entertainment", isDefault = true),
+                Category(userId = userId.toString(), name = "Education", icon = "ic_education", isDefault = true)
             )
             categoryDao.insertCategories(defaults)
         }
@@ -123,7 +126,8 @@ class StashedRepository(
         val categories = getCategoriesSync(userId)
         categories.forEach { category ->
             firestoreDb.collection("users").document(userStrId)
-                .collection("categories").document(category.id.toString())
+                // Fixed ID reference from id to categoryId
+                .collection("categories").document(category.categoryId.toString())
                 .set(category)
         }
 

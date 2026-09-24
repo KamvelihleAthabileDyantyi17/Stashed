@@ -19,15 +19,16 @@ interface CategoryDao {
     @Delete
     suspend fun deleteCategory(category: Category)
 
+    // Changed userId from Int to String to match Firebase UIDs
     @Query("SELECT * FROM categories WHERE userId = :userId ORDER BY isDefault DESC, name ASC")
-    fun getCategoriesForUser(userId: Int): Flow<List<Category>>
+    fun getCategoriesForUser(userId: String): Flow<List<Category>>
 
     @Query("SELECT * FROM categories WHERE userId = :userId ORDER BY isDefault DESC, name ASC")
-    suspend fun getCategoriesForUserSync(userId: Int): List<Category>
+    suspend fun getCategoriesForUserSync(userId: String): List<Category>
 
     @Query("SELECT * FROM categories WHERE categoryId = :categoryId LIMIT 1")
     suspend fun getCategoryById(categoryId: Int): Category?
 
     @Query("SELECT COUNT(*) FROM categories WHERE userId = :userId")
-    suspend fun getCategoryCount(userId: Int): Int
+    suspend fun getCategoryCount(userId: String): Int
 }

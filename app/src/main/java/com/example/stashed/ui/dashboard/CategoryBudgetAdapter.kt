@@ -7,8 +7,21 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stashed.R
+import com.example.stashed.data.entities.Category
 import com.example.stashed.databinding.ItemCategoryBudgetBinding
 import com.example.stashed.utils.CurrencyUtils
+
+enum class BudgetStatus {
+    GOOD, WARNING, DANGER
+}
+
+data class CategoryBudgetItem(
+    val category: Category,
+    val spent: Double,
+    val limit: Double,
+    val percentage: Double,
+    val status: BudgetStatus
+)
 
 class CategoryBudgetAdapter : ListAdapter<CategoryBudgetItem, CategoryBudgetAdapter.ViewHolder>(DIFF) {
 
@@ -16,6 +29,7 @@ class CategoryBudgetAdapter : ListAdapter<CategoryBudgetItem, CategoryBudgetAdap
         private val DIFF = object : DiffUtil.ItemCallback<CategoryBudgetItem>() {
             override fun areItemsTheSame(a: CategoryBudgetItem, b: CategoryBudgetItem) =
                 a.category.categoryId == b.category.categoryId
+
             override fun areContentsTheSame(a: CategoryBudgetItem, b: CategoryBudgetItem) = a == b
         }
     }
@@ -24,11 +38,15 @@ class CategoryBudgetAdapter : ListAdapter<CategoryBudgetItem, CategoryBudgetAdap
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: CategoryBudgetItem) {
+            // Hook up the new Emoji icon
+            binding.tvCategoryIcon.text = item.category.icon
+
             binding.tvCategoryName.text = item.category.name
             binding.tvSpent.text = CurrencyUtils.format(item.spent)
-            binding.tvLimit.text = if (item.category.budgetLimit > 0)
-                "/ ${CurrencyUtils.format(item.category.budgetLimit)}"
-            else "/ No limit"
+
+            binding.tvLimit.text = if (item.limit > 0)
+                " / ${CurrencyUtils.format(item.limit)}"
+            else " / No limit"
 
             val progress = item.percentage.coerceIn(0.0, 100.0).toInt()
             binding.progressBar.progress = progress
@@ -38,11 +56,9 @@ class CategoryBudgetAdapter : ListAdapter<CategoryBudgetItem, CategoryBudgetAdap
                 BudgetStatus.WARNING -> R.color.semanticWarning
                 BudgetStatus.DANGER  -> R.color.semanticDanger
             }
-            binding.progressBar.progressTintList =
-                ContextCompat.getColorStateList(binding.root.context, colorRes)
 
-            binding.tvPercent.text = "${progress}%"
-            binding.tvPercent.setTextColor(
+            // Updates the color of the LinearProgressIndicator dynamically
+            binding.progressBar.setIndicatorColor(
                 ContextCompat.getColor(binding.root.context, colorRes)
             )
         }

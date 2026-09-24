@@ -32,14 +32,28 @@ class AddCategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnSave.setOnClickListener {
+        // Maps to @+id/btnSaveCategory in XML
+        binding.btnSaveCategory.setOnClickListener {
             val name = binding.etCategoryName.text.toString().trim()
             val limitStr = binding.etBudgetLimit.text.toString().trim()
             val limit = limitStr.toDoubleOrNull() ?: 0.0
-            viewModel.addCategory(name, limit)
+
+            if (name.isNotEmpty()) {
+                viewModel.addCategory(name, limit)
+            } else {
+                Toast.makeText(requireContext(), "Please enter a category name", Toast.LENGTH_SHORT).show()
+            }
         }
 
-        binding.btnCancel.setOnClickListener { findNavController().popBackStack() }
+        // Maps to @+id/btnCancelCategory in XML
+        binding.btnCancelCategory.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        // Maps to @+id/btnClose in XML (Top left 'X' button)
+        binding.btnClose.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         viewModel.saveResult.observe(viewLifecycleOwner) { saved ->
             if (saved == true) {

@@ -17,10 +17,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
+            android:id="@+id/btnClose"
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:background="@drawable/bg_surface_rounded"
-            android:src="@drawable/ic_close"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
             app:tint="#F4F0E6" />
 
         <TextView
@@ -123,9 +124,6 @@
                         android:text="🚕"
                         android:textSize="18sp" />
                 </androidx.cardview.widget.CardView>
-
-                <!-- Repeat inactive CardViews for 🎬, 🧾, 🏠, 💊 -->
-
             </GridLayout>
 
             <!-- Monthly Limit -->
@@ -139,6 +137,7 @@
                 android:layout_marginBottom="7dp" />
 
             <EditText
+                android:id="@+id/etBudgetLimit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_input_field"
@@ -207,6 +206,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
+            android:id="@+id/btnSaveCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#F4F0E6"
@@ -219,6 +219,7 @@
             android:paddingVertical="14dp" />
 
         <Button
+            android:id="@+id/btnCancelCategory"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

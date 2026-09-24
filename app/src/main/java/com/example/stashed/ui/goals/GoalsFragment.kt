@@ -1,6 +1,5 @@
 package com.example.stashed.ui.goals
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.stashed.R
 import com.example.stashed.StashedApplication
 import com.example.stashed.data.entities.Goal
 import com.example.stashed.databinding.FragmentGoalsBinding
@@ -19,7 +16,6 @@ import com.example.stashed.utils.SessionManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import android.view.inputmethod.EditorInfo
-import java.util.Calendar
 
 class GoalsFragment : Fragment() {
 
@@ -43,9 +39,8 @@ class GoalsFragment : Fragment() {
         val adapter = GoalAdapter(
             onContribute = { goal -> showContributeDialog(goal) },
             onDelete = { goal -> viewModel.deleteGoal(goal) }
-
         )
-// Inside onViewCreated in GoalsFragment.kt:
+
         val openAddGoalSheet = View.OnClickListener {
             AddGoalBottomSheet().show(childFragmentManager, "AddGoalSheet")
         }
@@ -59,10 +54,6 @@ class GoalsFragment : Fragment() {
         viewModel.goals.observe(viewLifecycleOwner) { goals ->
             adapter.submitList(goals)
             binding.tvEmpty.visibility = if (goals.isEmpty()) View.VISIBLE else View.GONE
-        }
-
-        binding.fabAddGoal.setOnClickListener {
-            findNavController().navigate(R.id.action_goals_to_addGoal)
         }
 
         viewModel.error.observe(viewLifecycleOwner) { msg ->

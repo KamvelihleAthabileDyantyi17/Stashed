@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.example.stashed"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.stashed"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -39,22 +39,35 @@ android {
         dataBinding = false
     }
 
-    // This stops the CI from failing due to minor Lint issues
     lint {
         abortOnError = false
     }
 }
 
+// THE NUCLEAR OPTION: We've added Firebase Auth to the lockdown list.
+configurations.all {
+    resolutionStrategy {
+        force("androidx.credentials:credentials:1.2.2")
+        force("androidx.credentials:credentials-play-services-auth:1.2.2")
+        force("androidx.core:core-ktx:1.13.1")
+        force("androidx.core:core:1.13.1")
+        force("com.google.firebase:firebase-auth:22.3.1")
+    }
+}
+
 dependencies {
     // Security & Auth
-    implementation(libs.androidx.credentials)
-    implementation(libs.androidx.credentials.play.services.auth)
-    implementation(libs.firebase.auth)
+    implementation("androidx.credentials:credentials:1.2.2")
+    implementation("androidx.credentials:credentials-play-services-auth:1.2.2")
+
+    // REPLACED libs.firebase.auth WITH A FORCED STABLE VERSION
+    implementation("com.google.firebase:firebase-auth:22.3.1")
+
     implementation(libs.googleid)
     implementation("org.mindrot:jbcrypt:0.4")
 
     // Core Android Libraries
-    implementation(libs.androidx.core.ktx)
+    implementation("androidx.core:core-ktx:1.13.1")
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.recyclerview)
@@ -95,7 +108,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 }
 
-// New Kotlin 2.0 way to set the JVM Target
 kotlin {
     compilerOptions {
         jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)

@@ -53,6 +53,7 @@
             android:layout_marginBottom="7dp" />
 
         <EditText
+            android:id="@+id/etFullName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_input_field"
@@ -74,6 +75,7 @@
             android:layout_marginBottom="7dp" />
 
         <EditText
+            android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_input_field"
@@ -96,6 +98,7 @@
             android:layout_marginBottom="7dp" />
 
         <EditText
+            android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_input_field"
@@ -137,7 +140,7 @@
                 android:textSize="12.5sp" />
 
             <TextView
-                android:id="@+id/tvGoToLogin"
+                android:id="@+id/tvLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Log in"

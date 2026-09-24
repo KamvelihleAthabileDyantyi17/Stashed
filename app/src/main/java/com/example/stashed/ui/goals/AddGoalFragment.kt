@@ -36,7 +36,8 @@ class AddGoalFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnPickDate.setOnClickListener {
+        // Updated ID to match the new UI's Date Picker field
+        binding.etTargetDate.setOnClickListener {
             val cal = Calendar.getInstance()
             DatePickerDialog(
                 requireContext(),
@@ -44,7 +45,9 @@ class AddGoalFragment : Fragment() {
                     val picked = Calendar.getInstance()
                     picked.set(year, month, day, 23, 59, 59)
                     selectedDeadline = picked.timeInMillis
-                    binding.tvSelectedDate.text = DateUtils.formatDate(selectedDeadline)
+
+                    // Display the selected date inside the input field
+                    binding.etTargetDate.setText(DateUtils.formatDate(selectedDeadline))
                 },
                 cal.get(Calendar.YEAR),
                 cal.get(Calendar.MONTH),
@@ -52,14 +55,30 @@ class AddGoalFragment : Fragment() {
             ).show()
         }
 
-        binding.btnSave.setOnClickListener {
+        // Top left 'X' button
+        binding.btnClose.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        // Updated ID to match new UI button
+        binding.btnSaveGoal.setOnClickListener {
             val name = binding.etGoalName.text.toString().trim()
             val targetStr = binding.etTargetAmount.text.toString().trim()
             val target = targetStr.toDoubleOrNull() ?: 0.0
-            viewModel.addGoal(name, target, selectedDeadline)
+
+            // You can also capture 'etAlreadySaved' here if you update your ViewModel later!
+
+            if (name.isNotEmpty() && target > 0) {
+                viewModel.addGoal(name, target, selectedDeadline)
+            } else {
+                Toast.makeText(requireContext(), "Please enter a valid name and amount", Toast.LENGTH_SHORT).show()
+            }
         }
 
-        binding.btnCancel.setOnClickListener { findNavController().popBackStack() }
+        // Updated ID to match new UI button
+        binding.btnCancelGoal.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         viewModel.saveResult.observe(viewLifecycleOwner) { saved ->
             if (saved == true) {

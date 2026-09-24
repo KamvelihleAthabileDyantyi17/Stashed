@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.stashed.R
-import com.example.stashed.StashedApplication
 import com.example.stashed.utils.SessionManager
 
 class SplashFragment : Fragment() {
@@ -19,11 +18,14 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val session = SessionManager(requireContext())
+
         view.postDelayed({
             if (session.isLoggedIn()) {
-                findNavController().navigate(R.id.action_splash_to_dashboard)
+                // Navigates directly to the dashboard destination ID
+                findNavController().navigate(R.id.dashboardFragment)
             } else {
-                findNavController().navigate(R.id.action_splash_to_login)
+                // Navigates directly to the login destination ID
+                findNavController().navigate(R.id.loginFragment)
             }
         }, 1200)
     }
