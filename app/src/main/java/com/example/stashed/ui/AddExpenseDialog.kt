@@ -36,9 +36,9 @@ class AddExpenseDialog(
 
         val etAmount      = view.findViewById<EditText>(R.id.etExpenseAmount)
         val etDescription = view.findViewById<EditText>(R.id.etExpenseDescription)
-        val spinner        = view.findViewById<Spinner>(R.id.spinnerCategory)
-        val btnSave        = view.findViewById<Button>(R.id.btnSaveExpense)
-        val tvError        = view.findViewById<TextView>(R.id.tvExpenseError)
+        val spinner       = view.findViewById<Spinner>(R.id.spinnerCategory)
+        val btnSave       = view.findViewById<Button>(R.id.btnSaveExpense)
+        val tvError       = view.findViewById<TextView>(R.id.tvExpenseError)
 
         // Set up spinner
         val adapter = ArrayAdapter(
@@ -68,14 +68,15 @@ class AddExpenseDialog(
 
             lifecycleScope.launch {
                 val db = AppDatabase.getDatabase(requireContext())
-                val categoryId = spinner.selectedItemPosition + 1
+                // FIXED: Get the actual text name of the category from the spinner
+                val selectedCategory = spinner.selectedItem.toString()
 
                 // Run database operation on IO thread
                 withContext(Dispatchers.IO) {
                     db.expenseDao().insertExpense(
                         Expense(
                             userId      = userId,
-                            categoryId  = categoryId,
+                            category    = selectedCategory, // Replaced categoryId
                             amount      = amount,
                             description = description,
                             date        = Calendar.getInstance().timeInMillis

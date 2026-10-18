@@ -29,7 +29,8 @@ class BudgetCheckWorker(
 
             if (currentBudgetLimit <= 0) continue
 
-            val spent = repo.getTotalForCategoryThisMonth(userId, category.categoryId)
+            // FIXED: Passing category.name (String) instead of category.categoryId (Int)
+            val spent = repo.getTotalForCategoryThisMonth(userId, category.name)
             val percentage = (spent / currentBudgetLimit) * 100.0
 
             when {

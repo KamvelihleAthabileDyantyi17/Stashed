@@ -25,7 +25,8 @@ class ReportsViewModel(
         viewModelScope.launch {
             val categories = repository.getCategoriesSync(userId)
             val spends = categories.mapNotNull { cat ->
-                val spent = repository.getTotalForCategoryThisMonth(userId, cat.categoryId)
+                // FIXED: Passing cat.name (String) instead of cat.categoryId (Int)
+                val spent = repository.getTotalForCategoryThisMonth(userId, cat.name)
                 if (spent > 0) CategorySpend(cat, spent) else null
             }.sortedByDescending { it.totalSpent }
             _categorySpends.value = spends

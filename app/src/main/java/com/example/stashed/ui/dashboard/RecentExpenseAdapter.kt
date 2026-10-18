@@ -10,9 +10,7 @@ import com.example.stashed.databinding.ItemExpenseRecentBinding
 import com.example.stashed.utils.CurrencyUtils
 import com.example.stashed.utils.DateUtils
 
-class RecentExpenseAdapter(
-    private val categoryNames: Map<Int, String>
-) : ListAdapter<Expense, RecentExpenseAdapter.ViewHolder>(DIFF) {
+class RecentExpenseAdapter : ListAdapter<Expense, RecentExpenseAdapter.ViewHolder>(DIFF) {
 
     companion object {
         private val DIFF = object : DiffUtil.ItemCallback<Expense>() {
@@ -26,7 +24,8 @@ class RecentExpenseAdapter(
 
         fun bind(expense: Expense) {
             binding.tvNote.text = expense.description.ifBlank { "Expense" }
-            binding.tvCategory.text = categoryNames[expense.categoryId] ?: "—"
+            // FIXED: Directly binds the string instead of looking up an ID
+            binding.tvCategory.text = expense.category
             binding.tvAmount.text = CurrencyUtils.format(expense.amount)
             binding.tvDate.text = DateUtils.formatDate(expense.date)
         }

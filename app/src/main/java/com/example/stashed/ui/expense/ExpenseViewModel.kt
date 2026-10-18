@@ -23,12 +23,14 @@ class ExpenseViewModel(
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> = _error
 
-    fun addExpense(categoryId: Int, amount: Double, note: String) {
+    // FIXED: Changed categoryId: Int to category: String
+    fun addExpense(category: String, amount: Double, note: String) {
         if (amount <= 0) {
             _error.value = "Amount must be greater than zero"
             return
         }
-        if (categoryId == -1) {
+        // FIXED: String blank check instead of -1 integer check
+        if (category.isBlank()) {
             _error.value = "Please select a category"
             return
         }
@@ -36,7 +38,7 @@ class ExpenseViewModel(
             try {
                 val expense = Expense(
                     userId = userId,
-                    categoryId = categoryId,
+                    category = category, // FIXED: Matches the new database structure
                     amount = amount,
                     description = note.trim(),
                     date = System.currentTimeMillis()

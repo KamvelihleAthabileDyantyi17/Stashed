@@ -45,11 +45,11 @@ class StashedRepository(
         val (start, end) = DateUtils.currentMonthRange()
         return expenseDao.getExpensesForMonth(userId, start, end)
     }
-
-    suspend fun getTotalForCategoryThisMonth(userId: Int, categoryId: Int): Double {
+    suspend fun getTotalForCategoryThisMonth(userId: Int, category: String): Double {
         val (start, end) = DateUtils.currentMonthRange()
-        return expenseDao.getTotalForCategoryThisMonth(userId, categoryId, start, end) ?: 0.0
+        return expenseDao.getTotalForCategoryThisMonth(userId, category, start, end) ?: 0.0
     }
+
 
     suspend fun getTotalSpendForMonth(userId: Int): Double {
         val (start, end) = DateUtils.currentMonthRange()
