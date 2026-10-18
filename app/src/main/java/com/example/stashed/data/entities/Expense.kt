@@ -5,14 +5,11 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "expenses")
 data class Expense(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val userId: Int,
-    val categoryId: Int,
     val amount: Double,
     val description: String,
-    val date: Long,            // Stored as timestamp
-    val startTime: String = "",
-    val endTime: String = "",
-    val photoPath: String? = null  // Optional photo — null if no photo attached
+    val category: String,
+    val date: Long,
+    val isSynced: Boolean = false // NEW FLAG: Defaults to false when created offline
 )

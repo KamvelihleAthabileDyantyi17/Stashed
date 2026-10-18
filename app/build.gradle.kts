@@ -60,9 +60,12 @@ dependencies {
     implementation("androidx.credentials:credentials:1.2.2")
     implementation("androidx.credentials:credentials-play-services-auth:1.2.2")
 
+    // Firebase Cloud Messaging for Remote Push Notifications
+    implementation("com.google.firebase:firebase-messaging:23.4.1")
+
     // REPLACED libs.firebase.auth WITH A FORCED STABLE VERSION
     implementation("com.google.firebase:firebase-auth:22.3.1")
-
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation(libs.googleid)
     implementation("org.mindrot:jbcrypt:0.4")
 

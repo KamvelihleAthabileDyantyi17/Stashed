@@ -1,4 +1,4 @@
-package com.example.stashed.data.dao // <-- Note: I changed this to dao to keep your folders organized!
+package com.example.stashed.data.dao
 
 import androidx.room.*
 import com.example.stashed.data.entities.Expense
@@ -31,13 +31,17 @@ interface ExpenseDao {
     fun getExpensesForMonth(userId: Int, startMs: Long, endMs: Long): Flow<List<Expense>>
 
     // 6. Added the missing function to calculate specific category totals (crucial for your budget limits!)
-    @Query("SELECT COALESCE(SUM(amount), 0) FROM expenses WHERE userId = :userId AND categoryId = :categoryId AND date BETWEEN :startMs AND :endMs")
-    suspend fun getTotalForCategoryThisMonth(userId: Int, categoryId: Int, startMs: Long, endMs: Long): Double
-
+    // 6. Fixed to use 'category' (String) instead of 'categoryId'
+    @Query("SELECT COALESCE(SUM(amount), 0) FROM expenses WHERE userId = :userId AND category = :category AND date BETWEEN :startMs AND :endMs")
+    suspend fun getTotalForCategoryThisMonth(userId: Int, category: String, startMs: Long, endMs: Long): Double
     // 7. Fixed spelling to "Spend" to perfectly match your StashedRepository
     @Query("SELECT COALESCE(SUM(amount), 0) FROM expenses WHERE userId = :userId AND date BETWEEN :startMs AND :endMs")
     suspend fun getTotalSpendForMonth(userId: Int, startMs: Long, endMs: Long): Double
 
     @Query("DELETE FROM expenses WHERE userId = :userId AND date < :beforeDate")
     suspend fun deleteExpensesBefore(userId: Int, beforeDate: Long)
+
+    // 8. NEW: Grab all offline expenses that haven't been synced to Firebase yet
+    @Query("SELECT * FROM expenses WHERE isSynced = 0")
+    suspend fun getUnsyncedExpenses(): List<Expense>
 }

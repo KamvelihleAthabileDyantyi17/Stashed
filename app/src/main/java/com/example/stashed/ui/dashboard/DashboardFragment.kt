@@ -1,68 +1,86 @@
 package com.example.stashed.ui.dashboard
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import com.example.stashed.data.AppDatabase
-
-import com.example.stashed.data.repository.StashedRepository
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.stashed.R
+import com.example.stashed.StashedApplication
 import com.example.stashed.databinding.FragmentDashboardBinding
-import com.example.stashed.utils.CurrencyUtils
-import kotlinx.coroutines.launch
+import com.example.stashed.ui.ViewModelFactory
+import com.example.stashed.ui.adapters.TransactionAdapter
+import com.example.stashed.utils.SessionManager
 
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: DashboardViewModel
+    private val viewModel: DashboardViewModel by viewModels {
+        val app = requireActivity().application as StashedApplication
+        val userId = SessionManager(requireContext()).getUserId()
+        ViewModelFactory(app.repository, userId)
+    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    private lateinit var transactionAdapter: TransactionAdapter
+    private lateinit var sessionManager: SessionManager
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sessionManager = SessionManager(requireContext())
 
-// 1. Initialize Database, Repository, and ViewModel
-        val database = AppDatabase.getDatabase(requireContext())
-        val repository = StashedRepository(
-            database.userDao(),
-            database.expenseDao(),
-            database.categoryDao(),
-            database.goalDao()
-        )
+        // FIXED: Removed the redundant Elvis operator since getUserName() is non-nullable
+        binding.tvUserName.text = sessionManager.getUserName()
 
-        // Hardcoding userId = 1 just for testing the UI
-        val factory = DashboardViewModelFactory(repository, userId = 1)
-        viewModel = ViewModelProvider(this, factory)[DashboardViewModel::class.java]
+        // Handle Logout
+        binding.btnLogout.setOnClickListener {
+            sessionManager.logout()
+            findNavController().navigate(R.id.loginFragment)
+        }
 
-        // 2. Static Setup
-        binding.tvUserName.text = "Kamvelihle"
+        // Set up the Transaction List (FIXED: grammar in comment for the strict linter!)
+        transactionAdapter = TransactionAdapter(emptyList()) { expense ->
+            viewModel.deleteExpense(expense)
+        }
 
-        // 3. Click Listeners
+        binding.rvRecentTransactions.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = transactionAdapter
+        }
+
+        // Open the BottomSheet to add a new expense
         binding.fabAdd.setOnClickListener {
-            Toast.makeText(requireContext(), "Add Expense Clicked", Toast.LENGTH_SHORT).show()
+            val bottomSheet = com.example.stashed.ui.expense.AddExpenseBottomSheet()
+            bottomSheet.show(childFragmentManager, "AddExpense")
         }
 
-        binding.btnProfileIcon.setOnClickListener {
-            Toast.makeText(requireContext(), "Syncing to Firebase...", Toast.LENGTH_SHORT).show()
-            viewModel.triggerCloudSync()
-        }
+        // Observe Data from the Database
+        viewModel.currentMonthExpenses.observe(viewLifecycleOwner) { expenses ->
+            // Calculate total spend
+            val totalSpent = expenses.sumOf { it.amount }
+            binding.tvMainBalance.text = "R%.2f".format(totalSpent)
 
-        // 4. Observe Database Changes and Update UI
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.totalSpend.collect { amount ->
-                binding.tvMainBalance.text = CurrencyUtils.format(amount)
+            // Update the adapter list (newest first)
+            transactionAdapter.updateData(expenses.sortedByDescending { it.date })
+
+            // Toggle empty state visibility
+            if (expenses.isEmpty()) {
+                binding.tvEmptyState.visibility = View.VISIBLE
+                binding.rvRecentTransactions.visibility = View.GONE
+            } else {
+                binding.tvEmptyState.visibility = View.GONE
+                binding.rvRecentTransactions.visibility = View.VISIBLE
             }
         }
     }

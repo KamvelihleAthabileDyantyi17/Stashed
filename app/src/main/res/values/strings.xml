@@ -1,7 +1,20 @@
 <resources>
+    <!-- Core UI Strings -->
     <string name="app_name">Stashed</string>
+    <string name="login_title">Welcome Back</string>
+    <string name="email_hint">Email Address</string>
+    <string name="password_hint">Password</string>
+    <string name="login_button">Login</string>
+    <string name="register_prompt">Don\'t have an account? Sign Up</string>
+    <string name="dashboard_title">My Vault</string>
+    <string name="add_expense">Add Expense</string>
+    <string name="set_budget">Set Budget</string>
+    <string name="settings">Settings</string>
+    <string name="total_spent">Total Spent</string>
 
-    <string name="image_view_item_transform_content_description">Represents an image view in the
-        item
-    </string>
+    <!-- Missing string from your item_transform.xml -->
+    <string name="image_view_item_transform_content_description">Image Placeholder</string>
+
+    <!-- Your Firebase Web Client ID for Google SSO -->
+    <string name="default_web_client_id">300230513206-h36ljsnmu99nb0335hlsvg9gmsr5iuob.apps.googleusercontent.com</string>
 </resources>

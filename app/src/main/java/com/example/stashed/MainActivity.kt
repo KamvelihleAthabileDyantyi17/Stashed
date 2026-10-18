@@ -1,13 +1,22 @@
 package com.example.stashed
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,12 +31,11 @@ import com.example.stashed.ui.LoginActivity
 import com.example.stashed.ui.SetBudgetDialog
 import com.example.stashed.ui.adapters.TransactionAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlinx.coroutines.flow.first
-
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -58,6 +66,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvMinGoalLabel: TextView
     private lateinit var tvMaxGoalLabel: TextView
 
+    private val CHANNEL_ID = "BudgetAlerts"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
@@ -71,6 +81,7 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+        createNotificationChannel()
         bindViews()
         setupRecyclerView()
         setupClickListeners()
@@ -82,12 +93,81 @@ class MainActivity : AppCompatActivity() {
 
         android.util.Log.d("MainActivity", "Loading dashboard for userId: $userId")
 
+        // Trigger the background Firebase sync on startup
+        syncOfflineExpensesToFirebase()
         loadDashboard()
     }
 
     override fun onResume() {
         super.onResume()
         loadDashboard()
+    }
+
+    // --- FIREBASE OFFLINE SYNC REQUIREMENT ---
+    private fun syncOfflineExpensesToFirebase() {
+        val firestore = FirebaseFirestore.getInstance()
+
+        lifecycleScope.launch {
+            val db = AppDatabase.getDatabase(applicationContext)
+            val unsyncedExpenses = db.expenseDao().getUnsyncedExpenses()
+
+            for (expense in unsyncedExpenses) {
+                val expenseMap = hashMapOf(
+                    "userId" to expense.userId,
+                    "amount" to expense.amount,
+                    "description" to expense.description,
+                    "category" to expense.category,
+                    "date" to expense.date
+                )
+
+                firestore.collection("Expenses").add(expenseMap)
+                    .addOnSuccessListener {
+                        lifecycleScope.launch {
+                            val syncedExpense = expense.copy(isSynced = true)
+                            db.expenseDao().updateExpense(syncedExpense)
+                            android.util.Log.d("SYNC", "Successfully synced: ${expense.description}")
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        android.util.Log.e("SYNC", "Failed to sync: ${expense.description}", e)
+                    }
+            }
+        }
+    }
+
+    // --- REAL-TIME NOTIFICATIONS REQUIREMENT ---
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Budget Alerts"
+            val descriptionText = "Notifications for when you exceed your budget"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun sendBudgetNotification() {
+        // Handle Android 13+ permission requirements
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
+                return
+            }
+        }
+
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.mipmap.ic_launcher) // Uses your new custom icon!
+            .setContentTitle("Budget Alert ⚠️")
+            .setContentText("You have exceeded your monthly maximum budget limit!")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+
+        with(NotificationManagerCompat.from(this)) {
+            notify(1001, builder.build())
+        }
     }
 
     private fun bindViews() {
@@ -116,7 +196,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         transactionAdapter = TransactionAdapter(emptyList()) { expense ->
-            // Delete expense on long press confirmation
             lifecycleScope.launch {
                 val db = AppDatabase.getDatabase(applicationContext)
                 db.expenseDao().deleteExpense(expense)
@@ -132,30 +211,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        btnViewBadges.setOnClickListener {
-            startActivity(Intent(this, BadgesActivity::class.java))
-        }
-
-        btnCompleteMonth.setOnClickListener {
-            startActivity(Intent(this, BadgeCelebrationActivity::class.java))
-        }
-
-        btnViewGraph.setOnClickListener {
-            startActivity(Intent(this, GraphActivity::class.java))
-        }
+        btnViewBadges.setOnClickListener { startActivity(Intent(this, BadgesActivity::class.java)) }
+        btnCompleteMonth.setOnClickListener { startActivity(Intent(this, BadgeCelebrationActivity::class.java)) }
+        btnViewGraph.setOnClickListener { startActivity(Intent(this, GraphActivity::class.java)) }
 
         fabAddExpense.setOnClickListener {
-            AddExpenseDialog(userId) { loadDashboard() }
-                .show(supportFragmentManager, "AddExpense")
+            AddExpenseDialog(userId) { loadDashboard() }.show(supportFragmentManager, "AddExpense")
         }
 
         btnSetBudget.setOnClickListener {
-            SetBudgetDialog(
-                userId        = userId,
-                currentBudget = currentBudget?.maximumGoal ?: 0.0,
-                currentIncome = 0.0
-            ) { loadDashboard() }
-                .show(supportFragmentManager, "SetBudget")
+            SetBudgetDialog(userId = userId, currentBudget = currentBudget?.maximumGoal ?: 0.0, currentIncome = 0.0) {
+                loadDashboard()
+            }.show(supportFragmentManager, "SetBudget")
         }
 
         btnLogout.setOnClickListener {
@@ -173,7 +240,6 @@ class MainActivity : AppCompatActivity() {
         val year  = cal.get(Calendar.YEAR)
         val income = sharedPrefs.getFloat("monthlyIncome", 0f).toDouble()
 
-
         val startCal = Calendar.getInstance().apply {
             set(Calendar.DAY_OF_MONTH, 1)
             set(Calendar.HOUR_OF_DAY, 0)
@@ -187,18 +253,13 @@ class MainActivity : AppCompatActivity() {
             set(Calendar.MINUTE, 59)
             set(Calendar.SECOND, 59)
             set(Calendar.MILLISECOND, 999)
-
-
         }
 
         lifecycleScope.launch {
             val db         = AppDatabase.getDatabase(applicationContext)
             val budget     = db.budgetDao().getBudgetForMonth(userId, month, year)
-            val totalSpent = db.expenseDao().getTotalSpendForMonth(
-                userId, startCal.timeInMillis, endCal.timeInMillis
-            )
+            val totalSpent = db.expenseDao().getTotalSpendForMonth(userId, startCal.timeInMillis, endCal.timeInMillis)
             val recentList = db.expenseDao().getRecentExpenses(userId, 10).first()
-
 
             currentBudget = budget
 
@@ -206,7 +267,6 @@ class MainActivity : AppCompatActivity() {
                 updateBudgetCard(budget, totalSpent, income)
                 updateTransactionList(recentList)
             }
-
         }
     }
 
@@ -214,27 +274,28 @@ class MainActivity : AppCompatActivity() {
         val budgetAmount = budget?.maximumGoal ?: 0.0
         val remaining    = budgetAmount - totalSpent
 
-
         tvBudgetAmount.text    = "R%.2f".format(budgetAmount)
         tvSpentAmount.text     = "R%.2f".format(totalSpent)
         tvIncomeAmount.text = "R%.2f".format(income)
-        tvRemainingAmount.text = if (remaining >= 0) "R%.2f".format(remaining)
-        else "-R%.2f".format(-remaining)
+        tvRemainingAmount.text = if (remaining >= 0) "R%.2f".format(remaining) else "-R%.2f".format(-remaining)
 
         tvRemainingAmount.setTextColor(
-            if (remaining < 0) getColor(android.R.color.holo_red_light)
-            else getColor(android.R.color.holo_green_light)
-
+            if (remaining < 0) getColor(android.R.color.holo_red_light) else getColor(android.R.color.holo_green_light)
         )
-
 
         if (budgetAmount > 0) {
             val percent = ((totalSpent / budgetAmount) * 100).toInt().coerceIn(0, 100)
             progressBudget.progress = percent
             tvProgressPercent.text  = "$percent% used"
-            if (percent >= 80) {
+
+            if (percent >= 100) {
                 tvBudgetWarning.visibility = View.VISIBLE
-                tvBudgetWarning.text = if (percent >= 100) "Over budget!" else "Close to limit!"
+                tvBudgetWarning.text = "Over budget!"
+                // TRIGGER THE PUSH NOTIFICATION HERE!
+                sendBudgetNotification()
+            } else if (percent >= 80) {
+                tvBudgetWarning.visibility = View.VISIBLE
+                tvBudgetWarning.text = "Close to limit!"
             } else {
                 tvBudgetWarning.visibility = View.GONE
             }
@@ -242,10 +303,8 @@ class MainActivity : AppCompatActivity() {
             progressBudget.progress    = 0
             tvProgressPercent.text     = "No budget set"
             tvBudgetWarning.visibility = View.GONE
-
         }
 
-        // Goal progress display
         val minGoal = budget?.minimumGoal ?: 0.0
         val maxGoal = budget?.maximumGoal ?: 0.0
 
